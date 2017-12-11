@@ -1,0 +1,4 @@
+﻿  Scene.cpp
+f:\university\year 2\pgg assignment\pgg_flyingteapot\scene.cpp(14): warning C4305: '=': truncation from 'double' to 'float'
+  PGG_FlyingTeapot.vcxproj -> F:\University\Year 2\PGG Assignment\Debug\PGG_FlyingTeapot.exe
+  PGG_FlyingTeapot.vcxproj -> F:\University\Year 2\PGG Assignment\Debug\PGG_FlyingTeapot.pdb (Full PDB)
