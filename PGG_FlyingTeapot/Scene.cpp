@@ -75,6 +75,7 @@ Scene::Scene()
 	Mesh *modelMesh = new Mesh();
 	// Load from OBJ file. This must have triangulated geometry
 	modelMesh->LoadOBJ("wingedTeapot.obj");
+	//modelMesh->LoadOBJ("spaceship.obj"); 
 	// Tell the game object to use this mesh
 	//_model->SetMesh(modelMesh);
 	
