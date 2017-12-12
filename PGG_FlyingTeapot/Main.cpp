@@ -212,10 +212,10 @@ int main(int argc, char *argv[])
 					cmdRollRight = true;
 					break;
 				case SDLK_w:
-					cmdPitchUp = true;
+					//cmdPitchUp = true;
 					break;
 				case SDLK_s:
-					cmdPitchDown = true;
+					//cmdPitchDown = true;
 					break;
 				case SDLK_PAGEUP:
 					cmdThrustUp = true;
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
 					cmdThrustDown = true;
 					break;
 				case SDLK_SPACE:
-					
+						//Insert shoot command
 						//mainPlayer->ClearRotations();
 					break;
 				}
@@ -271,7 +271,6 @@ int main(int argc, char *argv[])
 			}
 		}
 
-
 		// Update our world
 		// We are going to work out the time between each frame now
 		// First, find the current time
@@ -285,26 +284,6 @@ int main(int argc, char *argv[])
 		float deltaTs = (float) (current - lastTime) / 1000.0f;
 		// Now that we've done this we can use the current time as the next frame's previous time
 		lastTime = current;
-		
-		// Control the camera based on our input commands
-		/*if( cmdRotateLeft &! cmdRotateRight )
-		{
-			myScene.ChangeCameraAngleY( 1.0f * deltaTs );
-		}
-		else if( cmdRotateRight &! cmdRotateLeft )
-		{
-			myScene.ChangeCameraAngleY( -1.0f * deltaTs );
-		}
-		
-		if( cmdRotateUp &! cmdRotateDown )
-		{
-			myScene.ChangeCameraAngleX( 1.0f * deltaTs );
-		}
-		else if( cmdRotateDown &! cmdRotateUp )
-		{
-			myScene.ChangeCameraAngleX( -1.0f * deltaTs );
-		}*/
-
 
 		if( cmdRollLeft &! cmdRollRight )
 		{
@@ -317,19 +296,6 @@ int main(int argc, char *argv[])
 		else
 		{
 			mainPlayer->ChangeRoll( 0.0f );
-		}
-		
-		if( cmdPitchUp &! cmdPitchDown )
-		{
-			mainPlayer->ChangePitch( 1.0f );
-		}
-		else if( cmdPitchDown &! cmdPitchUp )
-		{
-			mainPlayer->ChangePitch(-1.0f );
-		}
-		else
-		{
-			mainPlayer->ChangePitch( 0.0f );
 		}
 
 		if( cmdThrustUp &! cmdThrustDown )

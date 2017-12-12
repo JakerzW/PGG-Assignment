@@ -4,35 +4,27 @@
 #include <GLM/gtc/quaternion.hpp>
 #include "GameObject.h"
 
-
 class Player : public GameObject
 {
-public:
-	Player();
-	~Player();
+	public:
+		Player();
+		~Player();
 	
-	virtual void Update( float deltaTs );
+		virtual void Update( float deltaTs );
 	
-	void ChangeThrust(float value) {_thrust += value;}
-	void ChangeRoll( float value ) {_roll = value;}
-	void ChangePitch( float value ) {_pitch = value;}
+		void ChangeThrust(float value);
+		void ChangeRoll(float value);
+		void ChangePitch(float value);
 	
-	glm::quat GetOrientation() {return _orientation;}
+		glm::quat GetOrientation() {return _orientation;}
 	
-protected:
+	protected:
+		glm::vec3 _velocity;
+		glm::quat _orientation;
+		glm::vec3 _originalFacingDir, _originalUpDir, _originalLeftDir;
 
-	glm::vec3 _velocity;
-	glm::quat _orientation;
-	glm::vec3 _originalFacingDir, _originalUpDir, _originalLeftDir;
-
-	float _thrust;
-	float _pitch, _roll;
-
-
+		float _thrust;
+		float _pitch, _roll;
 };
-
-
-
-
 
 #endif

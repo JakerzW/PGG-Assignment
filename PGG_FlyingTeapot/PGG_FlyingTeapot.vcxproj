@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;GLEW_STATIC;GLM_FORCE_PURE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\SDKs\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\University\Year 2\PGG\PGG Assignment\SDKs\Lib86;..\SDKs\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

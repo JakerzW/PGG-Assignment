@@ -30,7 +30,20 @@ Player::~Player()
 
 }
 
+void Player::ChangeThrust(float value)
+{
+	_thrust += value;
+}
 
+void Player::ChangeRoll(float value)
+{
+	_roll = value;
+}
+
+void Player::ChangePitch(float value)
+{
+	_pitch = value;
+}
 
 void Player::Update( float deltaTs )
 {

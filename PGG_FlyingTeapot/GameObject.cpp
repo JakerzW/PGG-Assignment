@@ -20,8 +20,6 @@ void GameObject::Update( float deltaTs )
 	// Put any update code here
 	// Change the _position and _rotation to move the model
 
-
-
 	//_rotation.y += deltaTs * 0.5f;
 	while( _rotation.y > (3.14159265358979323846 * 2.0) )
 	{
