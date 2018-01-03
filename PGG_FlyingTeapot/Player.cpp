@@ -11,16 +11,11 @@
 Player::Player()
 {
 	_thrust = 0.5f;
-	_roll = 0.0f;
-	//_pitch = 0.0f;
-	
+	_roll = 0.0f;	
 	
 	// Initialise with direction object is facing
 	_originalFacingDir = glm::vec3(1, 0, 0);
-
-	/*_originalFacingDir = glm::vec3(1,0,0);
-	_originalUpDir = glm::vec3(0,1,0);
-	_originalLeftDir = glm::vec3(0,0,-1);*/
+	_originalLeftDir = glm::vec3(0, 0, -1);
 
 	// Give it an initial velocity, otherwise it falls out the sky
 	_velocity = glm::vec3(15.0f,0,0);
@@ -44,18 +39,23 @@ void Player::ChangeRoll(float value)
 
 void Player::ChangeHorizontalPos(float value)
 {
-
+	_horizontalPos = value;
 }
 
 void Player::ChangeVerticalPos(float value)
 {
-
+	_verticalPos = value;
 }
 
-//void Player::ChangePitch(float value)
-//{
-//	_pitch = value;
-//}
+float Player::GetRoll()
+{
+	return _roll;
+}
+
+glm::quat Player::GetOrientation()
+{
+	return _orientation;
+}
 
 void Player::Update( float deltaTs )
 {
@@ -63,41 +63,20 @@ void Player::Update( float deltaTs )
 	// Need to work out the current requested change in roll and pitch, based on these
 	// The magic numbers at the end are the maximum rates of turn
 
+	// Set the current roll
 	float currentRoll = _roll * deltaTs * 1.2f;
-	//float currentPitch = _pitch * deltaTs * 1.2f;
-
+	float currentHorizontalPos = _horizontalPos * deltaTs * 2.0f;
+	float currentVerticalPos = _verticalPos * deltaTs;
 	_thrust = glm::clamp(_thrust,0.0f,1.0f);
-
-	/*
-	// Compute current facing direction vector by rotating the original facing direction by the orientation
-	//glm::vec3 currentFacingDir = glm::rotate(_orientation, _originalFacingDir);
-
-	// Now, add a roll rotation by rotating about the facing direction axis
-	//_orientation = glm::angleAxis(currentRoll, currentFacingDir) * _orientation;
-
-	// Using the new orientation, compute the current left direction (literally the world-space direction that is 'left' for the player)
-	//glm::vec3 currentLeftDir = glm::rotate(_orientation,_originalLeftDir);
-	
-	// Add pitch rotation by rotating around the left direction axis
-	//_orientation = glm::angleAxis(currentPitch, currentLeftDir) * _orientation;
-	
-	// Update the current facing direction based on the new rotation
-	//currentFacingDir = glm::rotate(_orientation, _originalFacingDir);
-
-	//Update the position of the model by multiplying the current facing direction by thrust to make it move forward
-	//_position += currentFacingDir * _thrust;
-
-	// Set the modelling matrix based on the current position and orientation
-	//_modelMatrix = glm::translate( glm::mat4(1), _position ) * glm::mat4_cast(_orientation);
-	
-	//_invModelMatrix = glm::inverse(_modelMatrix);
-	*/
 
 	// Set the roll of the model around the facing direction
 	_orientation = glm::angleAxis(currentRoll, _originalFacingDir) * _orientation;
 
-	_position += _originalFacingDir * _thrust;
+	// Update position of model in the forward direction using the thrust value
+	_position += _originalFacingDir * currentVerticalPos;
+	_position += _originalLeftDir * currentHorizontalPos;
 
+	// Move the model to it's new position
 	_modelMatrix = glm::translate(glm::mat4(1), _position) * glm::mat4_cast(_orientation);
 	_invModelMatrix = glm::inverse(_modelMatrix);
 }

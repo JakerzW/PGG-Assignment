@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 	// These are controlled by the states of key presses
 	// They will be used to control the camera
 	bool cmdRotateLeft = false, cmdRotateRight = false, cmdRotateUp = false, cmdRotateDown = false;
-	bool cmdRollLeft = false, cmdRollRight = false, cmdPitchUp = false, cmdPitchDown = false, cmdThrustUp = false, cmdThrustDown = false;
+	bool cmdRollLeft = false, cmdRollRight = false, cmdMoveForward = false, cmdMoveBackward = false, cmdThrustUp = false, cmdThrustDown = false;
 
 	
 	Player *mainPlayer = myScene.GetPlayer();
@@ -212,10 +212,10 @@ int main(int argc, char *argv[])
 					cmdRollRight = true;
 					break;
 				case SDLK_w:
-					//cmdPitchUp = true;
+					cmdMoveForward = true;
 					break;
 				case SDLK_s:
-					//cmdPitchDown = true;
+					cmdMoveBackward = true;
 					break;
 				case SDLK_PAGEUP:
 					cmdThrustUp = true;
@@ -224,6 +224,7 @@ int main(int argc, char *argv[])
 					cmdThrustDown = true;
 					break;
 				case SDLK_SPACE:
+					//std::cout << "Roll: " << mainPlayer->GetRoll() << std::endl;
 						//Insert shoot command
 						//mainPlayer->ClearRotations();
 					break;
@@ -255,10 +256,10 @@ int main(int argc, char *argv[])
 					cmdRollRight = false;
 					break;
 				case SDLK_w:
-					cmdPitchUp = false;
+					cmdMoveForward = false;
 					break;
 				case SDLK_s:
-					cmdPitchDown = false;
+					cmdMoveBackward = false;
 					break;
 				case SDLK_PAGEUP:
 					cmdThrustUp = false;
@@ -288,14 +289,31 @@ int main(int argc, char *argv[])
 		if( cmdRollLeft &! cmdRollRight )
 		{
 			mainPlayer->ChangeRoll( -1.0f );
+			mainPlayer->ChangeHorizontalPos(10.0f);
 		}
 		else if( cmdRollRight &! cmdRollLeft )
 		{
 			mainPlayer->ChangeRoll( 1.0f );
+			mainPlayer->ChangeHorizontalPos(-10.0f);
 		}
 		else
 		{
 			mainPlayer->ChangeRoll( 0.0f );
+			mainPlayer->ChangeHorizontalPos(0.0f);
+		}
+
+		// Move forward or backward
+		if (cmdMoveForward & !cmdMoveBackward)
+		{
+			mainPlayer->ChangeVerticalPos(10.0f);
+		}
+		else if (cmdMoveBackward & !cmdMoveForward)
+		{
+			mainPlayer->ChangeVerticalPos(-10.0f);
+		}
+		else
+		{
+			mainPlayer->ChangeVerticalPos(0.0f);
 		}
 
 		if( cmdThrustUp &! cmdThrustDown )
