@@ -1,9 +1,5 @@
-﻿  Scene.cpp
-Scene.cpp(14): warning C4305: '=': truncation from 'double' to 'float'
-  Generating code
-  1 of 767 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+﻿  Generating code
+  All 762 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  PGG_FlyingTeapot.vcxproj -> C:\Users\Jaker\Documents\GitHub\PGG-Assignment\Release\PGG_FlyingTeapot.exe
-  PGG_FlyingTeapot.vcxproj -> C:\Users\Jaker\Documents\GitHub\PGG-Assignment\Release\PGG_FlyingTeapot.pdb (Full PDB)
+  PGG_FlyingTeapot.vcxproj -> D:\Documents\University\Year 2\PGG\PGG Assignment\Release\PGG_FlyingTeapot.exe
+  PGG_FlyingTeapot.vcxproj -> D:\Documents\University\Year 2\PGG\PGG Assignment\Release\PGG_FlyingTeapot.pdb (Full PDB)

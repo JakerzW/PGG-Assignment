@@ -92,7 +92,8 @@ Scene::Scene()
 	_player->SetMaterial( teapotMaterial);
 	_player->SetMesh(modelMesh);
 
-	_player->SetPosition(-1000.0f,50.0f,0.0f);
+	//_player->SetPosition(-1000.0f,50.0f,0.0f);
+	_player->SetPosition(0.0f, 50.0f, 0.0f);
 
 	//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleX, glm::vec3(1, 0, 0)); //Rotate initially to correct position
 	//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));

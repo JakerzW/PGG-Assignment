@@ -14,17 +14,21 @@ class Player : public GameObject
 	
 		void ChangeThrust(float value);
 		void ChangeRoll(float value);
-		void ChangePitch(float value);
+		void ChangeHorizontalPos(float value);
+		void ChangeVerticalPos(float value);
+		//void ChangePitch(float value);
 	
 		glm::quat GetOrientation() {return _orientation;}
 	
 	protected:
 		glm::vec3 _velocity;
 		glm::quat _orientation;
-		glm::vec3 _originalFacingDir, _originalUpDir, _originalLeftDir;
+		glm::vec3 _originalFacingDir;
+		//glm::vec3 _originalFacingDir, _originalUpDir, _originalLeftDir;
 
 		float _thrust;
-		float _pitch, _roll;
+		float _roll;
+		//float _pitch;
 };
 
 #endif
