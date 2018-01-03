@@ -194,16 +194,16 @@ int main(int argc, char *argv[])
 				switch( incomingEvent.key.keysym.sym )
 				{
 				case SDLK_DOWN:
-					cmdRotateDown = true;
+					cmdMoveBackward = true;
 					break;
 				case SDLK_UP:
-					cmdRotateUp = true;
+					cmdMoveForward = true;
 					break;
 				case SDLK_LEFT:
-					cmdRotateLeft = true;
+					cmdRollLeft = true;
 					break;
 				case SDLK_RIGHT:
-					cmdRotateRight = true;
+					cmdRollRight = true;
 					break;
 				case SDLK_a:
 					cmdRollLeft = true;
@@ -224,7 +224,6 @@ int main(int argc, char *argv[])
 					cmdThrustDown = true;
 					break;
 				case SDLK_SPACE:
-					//std::cout << "Roll: " << mainPlayer->GetRoll() << std::endl;
 						//Insert shoot command
 						//mainPlayer->ClearRotations();
 					break;
@@ -238,16 +237,16 @@ int main(int argc, char *argv[])
 				switch( incomingEvent.key.keysym.sym )
 				{
 				case SDLK_DOWN:
-					cmdRotateDown = false;
+					cmdMoveBackward = false;
 					break;
 				case SDLK_UP:
-					cmdRotateUp = false;
+					cmdMoveForward = false;
 					break;
 				case SDLK_LEFT:
-					cmdRotateLeft = false;
+					cmdRollLeft = false;
 					break;
 				case SDLK_RIGHT:
-					cmdRotateRight = false;
+					cmdRollRight = false;
 					break;
 				case SDLK_a:
 					cmdRollLeft = false;
@@ -286,15 +285,16 @@ int main(int argc, char *argv[])
 		// Now that we've done this we can use the current time as the next frame's previous time
 		lastTime = current;
 
+		// Move and roll the player left and right
 		if( cmdRollLeft &! cmdRollRight )
 		{
 			mainPlayer->ChangeRoll( -1.0f );
-			mainPlayer->ChangeHorizontalPos(10.0f);
+			mainPlayer->ChangeHorizontalPos(20.0f);
 		}
 		else if( cmdRollRight &! cmdRollLeft )
 		{
 			mainPlayer->ChangeRoll( 1.0f );
-			mainPlayer->ChangeHorizontalPos(-10.0f);
+			mainPlayer->ChangeHorizontalPos(-20.0f);
 		}
 		else
 		{
@@ -305,24 +305,15 @@ int main(int argc, char *argv[])
 		// Move forward or backward
 		if (cmdMoveForward & !cmdMoveBackward)
 		{
-			mainPlayer->ChangeVerticalPos(10.0f);
+			mainPlayer->ChangeVerticalPos(20.0f);
 		}
 		else if (cmdMoveBackward & !cmdMoveForward)
 		{
-			mainPlayer->ChangeVerticalPos(-10.0f);
+			mainPlayer->ChangeVerticalPos(-20.0f);
 		}
 		else
 		{
 			mainPlayer->ChangeVerticalPos(0.0f);
-		}
-
-		if( cmdThrustUp &! cmdThrustDown )
-		{
-			mainPlayer->ChangeThrust(1.0f*deltaTs);
-		}
-		else if( cmdThrustDown &! cmdThrustUp )
-		{
-			mainPlayer->ChangeThrust(-1.0f*deltaTs);
 		}
 
 		// Update the scene

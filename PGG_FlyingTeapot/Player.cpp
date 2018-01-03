@@ -10,7 +10,6 @@
 
 Player::Player()
 {
-	_thrust = 0.5f;
 	_roll = 0.0f;	
 	
 	// Initialise with direction object is facing
@@ -25,11 +24,6 @@ Player::Player()
 Player::~Player()
 {
 
-}
-
-void Player::ChangeThrust(float value)
-{
-	_thrust += value;
 }
 
 void Player::ChangeRoll(float value)
@@ -63,11 +57,10 @@ void Player::Update( float deltaTs )
 	// Need to work out the current requested change in roll and pitch, based on these
 	// The magic numbers at the end are the maximum rates of turn
 
-	// Set the current roll
+	// Set the current roll and the horizontal and vertical positions
 	float currentRoll = _roll * deltaTs * 1.2f;
 	float currentHorizontalPos = _horizontalPos * deltaTs * 2.0f;
 	float currentVerticalPos = _verticalPos * deltaTs;
-	_thrust = glm::clamp(_thrust,0.0f,1.0f);
 
 	// Set the roll of the model around the facing direction
 	_orientation = glm::angleAxis(currentRoll, _originalFacingDir) * _orientation;
