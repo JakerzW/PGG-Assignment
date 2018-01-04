@@ -291,15 +291,15 @@ int main(int argc, char *argv[])
 		lastTime = current;
 
 		// Move and roll the player left and right if the move is valid
-		if ((cmdRollLeft & !cmdRollRight) && (mainPlayer->GetPosition().z > -7.2))
+		if ((cmdRollLeft & !cmdRollRight) && (mainPlayer->GetPosition().z > -7))
 		{
 			mainPlayer->ChangeRoll( -1.0f );
-			mainPlayer->ChangeHorizontalPos(10.0f);
+			mainPlayer->ChangeHorizontalPos(20.0f);
 		}
-		else if ((cmdRollRight &! cmdRollLeft) && (mainPlayer->GetPosition().z < 7.2))
+		else if ((cmdRollRight &! cmdRollLeft) && (mainPlayer->GetPosition().z < 7))
 		{
 			mainPlayer->ChangeRoll( 1.0f );
-			mainPlayer->ChangeHorizontalPos(-10.0f);
+			mainPlayer->ChangeHorizontalPos(-20.0f);
 		}
 		else
 		{
@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
 		{
 			mainPlayer->ChangeVerticalPos(20.0f);
 		}
-		else if ((cmdMoveBackward & !cmdMoveForward) && (mainPlayer->GetPosition().x > -4))
+		else if ((cmdMoveBackward & !cmdMoveForward) && (mainPlayer->GetPosition().x > -3.5))
 		{
 			mainPlayer->ChangeVerticalPos(-20.0f);
 		}

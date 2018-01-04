@@ -59,11 +59,11 @@ void Player::Update( float deltaTs )
 
 	// Set the current roll and the horizontal and vertical positions
 	float currentRoll = _roll * deltaTs * 1.2f;
-	float currentHorizontalPos = _horizontalPos * deltaTs * 2.0f;
+	float currentHorizontalPos = _horizontalPos * deltaTs;
 	float currentVerticalPos = _verticalPos * deltaTs;
 
 	// Set the roll of the model around the facing direction
-	_orientation = glm::angleAxis(currentRoll, _originalFacingDir) * _orientation;
+	_orientation = glm::angleAxis(currentRoll, _originalFacingDir) *_orientation;
 
 	// Update position of model in the forward direction using the thrust value
 	_position += _originalFacingDir * currentVerticalPos;
