@@ -6,6 +6,7 @@
 // I find this the easiest way to include it
 // To compile and link GLEW like this ('statically') you must add  GLEW_STATIC  into Configuration Properties -> C/C++ -> Preprocessor -> Preprocessor Definitions
 #include "glew.h"
+#include "GLM/ext.hpp"
 
 #include "Scene.h"
 
@@ -38,7 +39,6 @@ bool InitGL()
 	
 	return true;
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -228,7 +228,8 @@ int main(int argc, char *argv[])
 						//mainPlayer->ClearRotations();
 					break;
 				case SDLK_HASH:
-
+					std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
+					std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
 					// Insert console output commands
 					break;
 				}
@@ -289,13 +290,13 @@ int main(int argc, char *argv[])
 		// Now that we've done this we can use the current time as the next frame's previous time
 		lastTime = current;
 
-		// Move and roll the player left and right
-		if( cmdRollLeft &! cmdRollRight )
+		// Move and roll the player left and right if the move is valid
+		if ((cmdRollLeft & !cmdRollRight) && (mainPlayer->GetPosition().z > -7.2))
 		{
 			mainPlayer->ChangeRoll( -1.0f );
 			mainPlayer->ChangeHorizontalPos(10.0f);
 		}
-		else if( cmdRollRight &! cmdRollLeft )
+		else if ((cmdRollRight &! cmdRollLeft) && (mainPlayer->GetPosition().z < 7.2))
 		{
 			mainPlayer->ChangeRoll( 1.0f );
 			mainPlayer->ChangeHorizontalPos(-10.0f);
@@ -307,12 +308,12 @@ int main(int argc, char *argv[])
 			mainPlayer->ChangeHorizontalPos(0.0f);
 		}
 
-		// Move forward or backward
-		if (cmdMoveForward & !cmdMoveBackward)
+		// Move forward or backward if the move is valid
+		if ((cmdMoveForward & !cmdMoveBackward) && (mainPlayer->GetPosition().x < 2.5))
 		{
 			mainPlayer->ChangeVerticalPos(20.0f);
 		}
-		else if (cmdMoveBackward & !cmdMoveForward)
+		else if ((cmdMoveBackward & !cmdMoveForward) && (mainPlayer->GetPosition().x > -4))
 		{
 			mainPlayer->ChangeVerticalPos(-20.0f);
 		}
