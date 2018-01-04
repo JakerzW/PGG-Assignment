@@ -42,7 +42,7 @@ protected:
 
 	// Currently one object, this could be a list of objects!
 	GameObject *_model;
-
+	GameObject *_stars;
 	
 	Player *_player;
 

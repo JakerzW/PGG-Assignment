@@ -92,12 +92,34 @@ Scene::Scene()
 	_player->SetMaterial( teapotMaterial);
 	_player->SetMesh(modelMesh);
 
-	//_player->SetPosition(-1000.0f,50.0f,0.0f);
+
 	_player->SetPosition(0.0f, 50.0f, 0.0f);
 
-	//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleX, glm::vec3(1, 0, 0)); //Rotate initially to correct position
-	//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
-	//_viewMatrix = glm::translate(_viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f));
+
+
+	// Create the star background game object
+	_stars = new GameObject();
+	// Create the stars material
+	Material *starsMaterial = new Material();
+	// Create the stars mesh
+	Mesh *starsMesh = new Mesh();
+	// Load the shaders
+	starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	// Set the diffuse colours
+	starsMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
+	// Set the texture
+		//starsMaterial->SetTexture("Stars.bmp");
+	// Set the light position
+	starsMaterial->SetLightPosition(_lightPosition);
+	// Set the material
+	_stars->SetMaterial(starsMaterial);
+	// Load the object .obj
+
+	// Set the mesh
+	_stars->SetMesh(starsMesh);
+
+
+
 }
 
 Scene::~Scene()
