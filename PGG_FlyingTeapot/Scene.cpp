@@ -97,6 +97,7 @@ Scene::Scene()
 
 	//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleX, glm::vec3(1, 0, 0)); //Rotate initially to correct position
 	//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
+	//_viewMatrix = glm::translate(_viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f));
 }
 
 Scene::~Scene()
@@ -121,7 +122,7 @@ void Scene::Update( float deltaTs )
 	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0,-3.0f,-15.0f)); // Provides offset away from player object
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Allows player to rotate camera using player object as pivot
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
-	_viewMatrix = glm::translate( _viewMatrix, -playerPos ); // Move to player's position
+	_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
 }
 
 void Scene::Draw()

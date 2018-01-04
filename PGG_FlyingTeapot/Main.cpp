@@ -227,6 +227,10 @@ int main(int argc, char *argv[])
 						//Insert shoot command
 						//mainPlayer->ClearRotations();
 					break;
+				case SDLK_HASH:
+
+					// Insert console output commands
+					break;
 				}
 				break;
 			
@@ -289,15 +293,16 @@ int main(int argc, char *argv[])
 		if( cmdRollLeft &! cmdRollRight )
 		{
 			mainPlayer->ChangeRoll( -1.0f );
-			mainPlayer->ChangeHorizontalPos(20.0f);
+			mainPlayer->ChangeHorizontalPos(10.0f);
 		}
 		else if( cmdRollRight &! cmdRollLeft )
 		{
 			mainPlayer->ChangeRoll( 1.0f );
-			mainPlayer->ChangeHorizontalPos(-20.0f);
+			mainPlayer->ChangeHorizontalPos(-10.0f);
 		}
 		else
 		{
+			// Reset the roll of the player
 			mainPlayer->ChangeRoll( 0.0f );
 			mainPlayer->ChangeHorizontalPos(0.0f);
 		}
