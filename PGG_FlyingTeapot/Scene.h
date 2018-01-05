@@ -1,6 +1,7 @@
 
 
 #include "Player.h"
+#include "Stars.h"
 
 // The GLM library contains vector and matrix functions and classes for us to use
 // They are designed to easily work with OpenGL!
@@ -42,7 +43,7 @@ protected:
 
 	// Currently one object, this could be a list of objects!
 	GameObject *_model;
-	GameObject *_stars;
+	Stars *_stars;
 	
 	Player *_player;
 

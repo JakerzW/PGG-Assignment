@@ -44,7 +44,7 @@ Scene::Scene()
 	// This is multiplied by all the light components (ambient, diffuse, specular)
 	// Note that the diffuse colour set with the line above will be multiplied by the texture colour
 	// If you want just the texture colour, use modelMaterial->SetDiffuseColour( glm::vec3(1,1,1) );
-	modelMaterial->SetTexture("Image1.bmp");
+	modelMaterial->SetTexture("Stars.bmp");
 	// Need to tell the material the light's position
 	// If you change the light's position you need to call this again
 	modelMaterial->SetLightPosition(_lightPosition);
@@ -96,28 +96,29 @@ Scene::Scene()
 	_player->SetPosition(0.0f, 50.0f, 0.0f);
 
 
+	_stars = new Stars();
+	//// Create the star background game object
+	//_stars = new GameObject();
+	//// Create the stars material
+	//Material *starsMaterial = new Material();
+	//// Create the stars mesh
+	//Mesh *starsMesh = new Mesh();
+	//// Load the shaders
+	//starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	//// Set the diffuse colours
+	//starsMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
+	//// Set the texture
+	//	//starsMaterial->SetTexture("Stars.bmp");
+	//// Set the light position
+	//starsMaterial->SetLightPosition(_lightPosition);
+	//// Set the material
+	//_stars->SetMaterial(starsMaterial);
+	//// Load the object .obj
 
-	// Create the star background game object
-	_stars = new GameObject();
-	// Create the stars material
-	Material *starsMaterial = new Material();
-	// Create the stars mesh
-	Mesh *starsMesh = new Mesh();
-	// Load the shaders
-	starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	// Set the diffuse colours
-	starsMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
-	// Set the texture
-		//starsMaterial->SetTexture("Stars.bmp");
-	// Set the light position
-	starsMaterial->SetLightPosition(_lightPosition);
-	// Set the material
-	_stars->SetMaterial(starsMaterial);
-	// Load the object .obj
+	//// Set the mesh
+	//_stars->SetMesh(starsMesh);
 
-	// Set the mesh
-	_stars->SetMesh(starsMesh);
-
+	
 
 
 }
@@ -151,9 +152,9 @@ void Scene::Draw()
 {
 	// Draw that model, giving it the camera's position and projection
 	_model->Draw(_viewMatrix,_projMatrix);
-	
+	//_stars->Draw();
 	_player->Draw(_viewMatrix,_projMatrix);
-
+	
 
 
 }
