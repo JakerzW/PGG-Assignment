@@ -16,87 +16,74 @@ Scene::Scene()
 	// Set up the viewing matrix
 	// This represents the camera's orientation and position
 	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0,0,-3.5f) );
-	
 
 	// Set up a projection matrix
 	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 10000.0f);
-
-
-
-
-	// Set up your scene here
 
 	// Position of the light, in world-space
 	_lightPosition = glm::vec3(10,10,0);
 
 	// Create a game object
 	// This needs a material and a mesh
-	_model = new GameObject();
-
 	// Create the material for the game object
-	Material *modelMaterial = new Material();
 	// Shaders are now in files
-	modelMaterial->LoadShaders("VertShader.txt","FragShader.txt");
-	// You can set some simple material properties, these values are passed to the shader
-	// This colour modulates the texture colour
-	modelMaterial->SetDiffuseColour( glm::vec3(0.8,0.1,0.1) );
-	// The material currently supports one texture
-	// This is multiplied by all the light components (ambient, diffuse, specular)
-	// Note that the diffuse colour set with the line above will be multiplied by the texture colour
-	// If you want just the texture colour, use modelMaterial->SetDiffuseColour( glm::vec3(1,1,1) );
-	modelMaterial->SetTexture("Stars.bmp");
-	// Need to tell the material the light's position
-	// If you change the light's position you need to call this again
-	modelMaterial->SetLightPosition(_lightPosition);
-	// Tell the game object to use this material
-	_model->SetMaterial(modelMaterial);
-
-
-
 	// Create the material for the game object
-	Material *teapotMaterial = new Material();
 	// Shaders are now in files
-	teapotMaterial->LoadShaders( "VertShader.txt", "FragShader.txt" );
-	// You can set some simple material properties, these values are passed to the shader
-	// This colour modulates the texture colour
-	teapotMaterial->SetDiffuseColour( glm::vec3( 1.0, 1.0, 1.0 ) );
-	// The material currently supports one texture
-	// This is multiplied by all the light components (ambient, diffuse, specular)
-	// Note that the diffuse colour set with the line above will be multiplied by the texture colour
-	// If you want just the texture colour, use modelMaterial->SetDiffuseColour( glm::vec3(1,1,1) );
-	teapotMaterial->SetTexture( "FlyingTeapotColour.bmp" );
-	// Need to tell the material the light's position
-	// If you change the light's position you need to call this again
-	teapotMaterial->SetLightPosition( _lightPosition );
-
-
-
 	// The mesh is the geometry for the object
-	Mesh *modelMesh = new Mesh();
 	// Load from OBJ file. This must have triangulated geometry
-	modelMesh->LoadOBJ("wingedTeapot.obj");
 	//modelMesh->LoadOBJ("spaceship.obj"); 
-	// Tell the game object to use this mesh
-	//_model->SetMesh(modelMesh);
+	
+	// Create a new game object for the player
+	_player = new Player();
+	// Create a material for the player
+	Material *teapotMaterial = new Material();
+	// Create a mesh for the player
+	Mesh *modelMesh = new Mesh();
+	// Load the shaders for the player's material
+	teapotMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
+	teapotMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
+	// Set the texture for the material
+	teapotMaterial->SetTexture("FlyingTeapotColour.bmp");
+	// Set the lights position for the material
+	teapotMaterial->SetLightPosition(_lightPosition);
+	// Assign the material to the game object
+	_player->SetMaterial( teapotMaterial);
+	// Load the obj file for the model
+	modelMesh->LoadOBJ("Ship.obj");
+	//modelMesh->LoadOBJ("wingedTeapot.obj");
+	// Set the mesh loaded from the obj file to the game object
+	_player->SetMesh(modelMesh);
+	// Set the position of the game object in the scene
+	_player->SetPosition(0.0f, 50.0f, 0.0f);
 	
 
-	// The mesh is the geometry for the object
+	// Create and set up the ground
+	_model = new GameObject();
+	Material *modelMaterial = new Material();
 	Mesh *groundMesh = new Mesh();
-	// Load from OBJ file. This must have triangulated geometry
+	modelMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	modelMaterial->SetDiffuseColour(glm::vec3(0.8, 0.1, 0.1));
+	modelMaterial->SetTexture("Stars.bmp");
+	modelMaterial->SetLightPosition(_lightPosition);
+	_model->SetMaterial(modelMaterial);
 	groundMesh->LoadOBJ("ground.obj");
-	// Tell the game object to use this mesh
 	_model->SetMesh(groundMesh);
 
+	//// Create and set up the ground
+	//_stars = new Stars();
+	//Material *starsMaterial = new Material();
+	//Mesh *starsMesh = new Mesh();
+	//starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	//starsMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
+	//starsMaterial->SetTexture("Stars.bmp");
+	//starsMaterial->SetLightPosition(_lightPosition);
+	//_model->SetMaterial(starsMaterial);
+	//starsMesh->LoadOBJ("Stars.obj");
+	//_model->SetMesh(starsMesh);
 
-	_player = new Player();
-	_player->SetMaterial( teapotMaterial);
-	_player->SetMesh(modelMesh);
 
-
-	_player->SetPosition(0.0f, 50.0f, 0.0f);
-
-
-	_stars = new Stars();
+	//_stars = new Stars();
 	//// Create the star background game object
 	//_stars = new GameObject();
 	//// Create the stars material
@@ -152,7 +139,7 @@ void Scene::Draw()
 {
 	// Draw that model, giving it the camera's position and projection
 	_model->Draw(_viewMatrix,_projMatrix);
-	//_stars->Draw();
+	//_stars->Draw(_viewMatrix,_projMatrix);
 	_player->Draw(_viewMatrix,_projMatrix);
 	
 

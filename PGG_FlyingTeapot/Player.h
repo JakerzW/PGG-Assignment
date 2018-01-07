@@ -12,7 +12,6 @@ class Player : public GameObject
 	
 		virtual void Update( float deltaTs );
 	
-		//void ChangeThrust(float value);
 		void ChangeRoll(float value);
 		void ChangeHorizontalPos(float value);
 		void ChangeVerticalPos(float value);
@@ -26,7 +25,6 @@ class Player : public GameObject
 		glm::vec3 _originalFacingDir;
 		glm::vec3 _originalLeftDir;
 
-		//float _thrust;
 		float _roll;
 		float _horizontalPos;
 		float _verticalPos;

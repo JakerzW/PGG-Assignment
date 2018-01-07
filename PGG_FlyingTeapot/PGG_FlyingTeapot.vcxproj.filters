@@ -47,10 +47,10 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
+    <ClCompile Include="Stars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stars.cpp">
+    <ClCompile Include="Asteroid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,10 +76,10 @@
     <ClInclude Include="wglew.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
+    <ClInclude Include="Stars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Stars.h">
+    <ClInclude Include="Asteroid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

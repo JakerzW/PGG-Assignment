@@ -1,5 +1,3 @@
-
-
 #include "Player.h"
 #include "Stars.h"
 
@@ -44,7 +42,6 @@ protected:
 	// Currently one object, this could be a list of objects!
 	GameObject *_model;
 	Stars *_stars;
-	
 	Player *_player;
 
 		

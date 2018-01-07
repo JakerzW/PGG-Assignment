@@ -1,22 +1,15 @@
 #pragma once
-#include <GLM/glm.hpp>
-#include <GLM/gtc/matrix_transform.hpp> 
-#include <GLM/gtc/type_ptr.hpp> 
 
-#include "Cube.h"
+#include "GameObject.h"
 
-class Stars
+class Stars : public GameObject
 {
 	public:
 		Stars();
 		~Stars();
 
-		void Draw();
-
-		glm::mat4 GetModelMatrix();
+		virtual void Update(float deltaTs);
 
 	protected:
-		glm::mat4 _modelMatrix;
-		Cube _stars;
 
 };
