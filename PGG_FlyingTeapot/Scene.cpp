@@ -90,7 +90,6 @@ Scene::Scene()
 	Mesh *laserMesh = new Mesh();
 	laserMesh->LoadOBJ("Laser.obj");
 	_laser->SetMesh(laserMesh);
-	//_laser->SetPosition(5.0f, 50.0f, 0.0f);
 	_laser->SetPosition(_player->GetPosition().x + 1, _player->GetPosition().y, _player->GetPosition().z);
 
 }
