@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Stars.h"
 #include "Asteroid.h"
+#include "Laser.h"
 
 // The GLM library contains vector and matrix functions and classes for us to use
 // They are designed to easily work with OpenGL!
@@ -44,7 +45,9 @@ protected:
 	GameObject *_model;
 	Stars *_stars;
 	Player *_player;
-	Player *_asteroid;
+	Asteroid *_asteroid;
+	Laser *_laser;
+
 		
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;

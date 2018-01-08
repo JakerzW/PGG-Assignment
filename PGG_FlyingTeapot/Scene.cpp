@@ -1,13 +1,10 @@
-
 #include "Scene.h"
-
-#define PI 3.14159265358979323846;
-#define PI_2 1.57079632679489661923;
 
 #include <iostream>
 #include <SDL/SDL.h>
 
-
+#define PI 3.14159265358979323846;
+#define PI_2 1.57079632679489661923;
 
 Scene::Scene()
 {
@@ -21,7 +18,7 @@ Scene::Scene()
 	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 10000.0f);
 
 	// Position of the light, in world-space
-	_lightPosition = glm::vec3(10,10,0);
+	_lightPosition = glm::vec3(0,10,0);
 
 	// Create a game object
 	// This needs a material and a mesh
@@ -56,7 +53,6 @@ Scene::Scene()
 	// Set the position of the game object in the scene
 	_player->SetPosition(0.0f, 50.0f, 0.0f);
 	
-
 	//// Create and set up the ground
 	//_model = new GameObject();
 	//Material *modelMaterial = new Material();
@@ -80,21 +76,33 @@ Scene::Scene()
 	Mesh *starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
 	_stars->SetMesh(starsMesh);
-	_stars->SetPosition(0.0f, 20.0f, 0.0f);
-
+	_stars->SetPosition(0.0f, 0.0f, 0.0f); // x should be from -100 to 100
 
 	//Create and set up an asteroid
-	_asteroid = new Player();
+	_asteroid = new Asteroid();
 	Material *asteroidMaterial = new Material();
 	asteroidMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	asteroidMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	asteroidMaterial->SetTexture("FlyingTeapotColour.bmp");
+	asteroidMaterial->SetTexture("Asteroid.bmp");
 	asteroidMaterial->SetLightPosition(_lightPosition);
 	_asteroid->SetMaterial(asteroidMaterial);
 	Mesh *asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	_asteroid->SetMesh(asteroidMesh);
 	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);
+
+	//Create and set up an laser
+	_laser = new Laser();
+	Material *laserMaterial = new Material();
+	laserMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
+	laserMaterial->SetTexture("Laser.bmp");
+	laserMaterial->SetLightPosition(_lightPosition);
+	_laser->SetMaterial(laserMaterial);
+	Mesh *laserMesh = new Mesh();
+	laserMesh->LoadOBJ("Laser.obj");
+	_laser->SetMesh(laserMesh);
+	_laser->SetPosition(5.0f, 50.0f, 0.0f);
 
 }
 
@@ -107,9 +115,10 @@ void Scene::Update( float deltaTs )
 {
 	// Update the game object (this is currently hard-coded to rotate)
 	//_model->Update( deltaTs );
-
+	_stars->Update(deltaTs);
 	_player->Update(deltaTs);
 	_asteroid->Update(deltaTs);
+	_laser->Update(deltaTs);
 
 	glm::vec3 playerPos = _player->GetPosition();
 	glm::quat playerOrientation = _player->GetOrientation();
@@ -131,6 +140,7 @@ void Scene::Draw()
 	_stars->Draw(_viewMatrix,_projMatrix);
 	_player->Draw(_viewMatrix,_projMatrix);
 	_asteroid->Draw(_viewMatrix, _projMatrix);
+	_laser->Draw(_viewMatrix, _projMatrix);
 
 
 }

@@ -1,6 +1,7 @@
 #pragma once
-#include <GLM/gtc/quaternion.hpp>
+
 #include "GameObject.h"
+#include <GLM/gtc/quaternion.hpp>
 
 class Asteroid : public GameObject
 {
