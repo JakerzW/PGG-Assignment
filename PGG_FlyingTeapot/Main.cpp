@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
 					break;
 				case SDLK_HASH:
 					std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
-					std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
+					//std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
 					// Insert console output commands
 					break;
 				}
@@ -309,11 +309,11 @@ int main(int argc, char *argv[])
 		}
 
 		// Move forward or backward if the move is valid
-		if ((cmdMoveForward & !cmdMoveBackward) && (mainPlayer->GetPosition().x < 2.5))
+		if ((cmdMoveForward & !cmdMoveBackward) && (mainPlayer->GetPosition().x < 3))
 		{
 			mainPlayer->ChangeVerticalPos(20.0f);
 		}
-		else if ((cmdMoveBackward & !cmdMoveForward) && (mainPlayer->GetPosition().x > -3.5))
+		else if ((cmdMoveBackward & !cmdMoveForward) && (mainPlayer->GetPosition().x > -2.5))
 		{
 			mainPlayer->ChangeVerticalPos(-20.0f);
 		}

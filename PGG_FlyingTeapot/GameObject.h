@@ -4,6 +4,13 @@
 #include "Mesh.h"
 #include "Material.h"
 
+#include <GLM/gtc/type_ptr.hpp>
+#include <GLM/gtc/matrix_transform.hpp>
+#include <GLM/gtx/rotate_vector.hpp>
+#include <GLM/gtc/quaternion.hpp>
+#include <GLM/gtx/quaternion.hpp>
+#include <cmath>
+
 // The GameObject contains a mesh, a material and position / orientation information
 class GameObject
 {

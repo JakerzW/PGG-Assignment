@@ -36,24 +36,23 @@ Scene::Scene()
 	// Create a new game object for the player
 	_player = new Player();
 	// Create a material for the player
-	Material *teapotMaterial = new Material();
+	Material *shipMaterial = new Material();
 	// Load the shaders for the player's material
-	teapotMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	shipMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
-	teapotMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
+	shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
 	// Set the texture for the material
-	teapotMaterial->SetTexture("FlyingTeapotColour.bmp");
+	shipMaterial->SetTexture("FlyingTeapotColour.bmp");
 	// Set the lights position for the material
-	teapotMaterial->SetLightPosition(_lightPosition);
+	shipMaterial->SetLightPosition(_lightPosition);
 	// Assign the material to the game object
-	_player->SetMaterial( teapotMaterial);
+	_player->SetMaterial(shipMaterial);
 	// Create a mesh for the player
-	Mesh *modelMesh = new Mesh();
+	Mesh *shipMesh = new Mesh();
 	// Load the obj file for the model
-	modelMesh->LoadOBJ("Ship.obj");
-	//modelMesh->LoadOBJ("wingedTeapot.obj");
+	shipMesh->LoadOBJ("Ship.obj");
 	// Set the mesh loaded from the obj file to the game object
-	_player->SetMesh(modelMesh);
+	_player->SetMesh(shipMesh);
 	// Set the position of the game object in the scene
 	_player->SetPosition(0.0f, 50.0f, 0.0f);
 	
@@ -79,7 +78,7 @@ Scene::Scene()
 	starsMaterial->SetLightPosition(_lightPosition);
 	_stars->SetMaterial(starsMaterial);
 	Mesh *starsMesh = new Mesh();
-	starsMesh->LoadOBJ("Stars4.obj");
+	starsMesh->LoadOBJ("Stars.obj");
 	_stars->SetMesh(starsMesh);
 	_stars->SetPosition(0.0f, 20.0f, 0.0f);
 
@@ -95,7 +94,7 @@ Scene::Scene()
 	Mesh *asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	_asteroid->SetMesh(asteroidMesh);
-	_asteroid->SetPosition(0.0f, 50.0f, 0.0f);
+	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);
 
 }
 
@@ -109,7 +108,8 @@ void Scene::Update( float deltaTs )
 	// Update the game object (this is currently hard-coded to rotate)
 	//_model->Update( deltaTs );
 
-	_player->Update( deltaTs );
+	_player->Update(deltaTs);
+	_asteroid->Update(deltaTs);
 
 	glm::vec3 playerPos = _player->GetPosition();
 	glm::quat playerOrientation = _player->GetOrientation();
@@ -118,7 +118,7 @@ void Scene::Update( float deltaTs )
 	// This updates the camera's position and orientation based on those of the player
 
 	// Build the viewing matrix:
-	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, -3.0f, -15.0f)); // Provides offset away from player object
+	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Allows player to rotate camera using player object as pivot
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
 	_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
