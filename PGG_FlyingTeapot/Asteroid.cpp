@@ -27,12 +27,12 @@ void Asteroid::ChangeVerticalPos(float value)
 
 float Asteroid::GetRoll()
 {
-	return 0.0f;
+	return _roll;
 }
 
 glm::quat Asteroid::GetOrientation()
 {
-	return glm::quat();
+	return _orientation;
 }
 
 void Asteroid::Update(float deltaTs)

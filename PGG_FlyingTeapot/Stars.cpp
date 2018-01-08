@@ -15,7 +15,8 @@ Stars::Stars()
 
 Stars::~Stars()
 {
-
+	/*SetMaterial(NULL);
+	SetMesh(NULL);*/
 }
 
 void Stars::Update(float deltaTs)
