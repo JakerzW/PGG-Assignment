@@ -323,7 +323,7 @@ int main(int argc, char *argv[])
 		}
 
 		// Update the scene
-		myScene.Update( deltaTs );
+		myScene.Update(deltaTs);
 
 
 		// Draw our world

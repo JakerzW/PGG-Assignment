@@ -18,7 +18,7 @@ class Asteroid : public GameObject
 		float GetRoll();
 		glm::quat GetOrientation();
 	protected:
-		glm::vec3 _velocity;
+		float _velocity;
 		glm::quat _orientation;
 		glm::vec3 _originalFacingDir;
 		glm::vec3 _originalLeftDir;

@@ -64,11 +64,11 @@ Scene::Scene()
 	Mesh *starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
 	_stars->SetMesh(starsMesh);*/
-	_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100
+	//_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100
 
 	//Create and set up an asteroid
 	_asteroid = new Asteroid();
-	Material *asteroidMaterial = new Material();
+	/*Material *asteroidMaterial = new Material();
 	asteroidMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	asteroidMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	asteroidMaterial->SetTexture("Asteroid.bmp");
@@ -77,7 +77,7 @@ Scene::Scene()
 	Mesh *asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	_asteroid->SetMesh(asteroidMesh);
-	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);
+	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);*/
 
 	//Create and set up an laser
 	_laser = new Laser();

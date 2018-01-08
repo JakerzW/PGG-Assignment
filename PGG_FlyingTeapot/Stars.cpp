@@ -12,6 +12,7 @@ Stars::Stars()
 	starsMesh->LoadOBJ("Stars.obj");
 	SetMesh(starsMesh);
 
+	SetPosition(100.0f, 0.0f, 0.0f);
 	_velocity = 0.3f;
 }
 
@@ -23,7 +24,11 @@ Stars::~Stars()
 
 void Stars::Update(float deltaTs)
 {
-	_velocity = glm::clamp(_velocity, 0.0f, 1.0f);
+	// Replace this with creation of a new quad
+	if (GetPosition().x < -100.0f)
+	{
+		SetPosition(100.0f, 0.0f, 0.0f);
+	}
 
 	_position += glm::vec3(-1.0f, 0.0f, 0.0f) * _velocity;
 
