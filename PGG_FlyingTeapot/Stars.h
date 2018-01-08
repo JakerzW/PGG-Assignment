@@ -11,5 +11,5 @@ class Stars : public GameObject
 		virtual void Update(float deltaTs);
 
 	protected:
-
+		float _velocity;
 };

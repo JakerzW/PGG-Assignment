@@ -64,7 +64,7 @@ Scene::Scene()
 	Mesh *starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
 	_stars->SetMesh(starsMesh);*/
-	_stars->SetPosition(0.0f, 0.0f, 0.0f); // x should be from -100 to 100
+	_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100
 
 	//Create and set up an asteroid
 	_asteroid = new Asteroid();

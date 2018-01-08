@@ -11,6 +11,8 @@ Stars::Stars()
 	Mesh *starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
 	SetMesh(starsMesh);
+
+	_velocity = 0.3f;
 }
 
 Stars::~Stars()
@@ -21,6 +23,10 @@ Stars::~Stars()
 
 void Stars::Update(float deltaTs)
 {
+	_velocity = glm::clamp(_velocity, 0.0f, 1.0f);
+
+	_position += glm::vec3(-1.0f, 0.0f, 0.0f) * _velocity;
+
 	_modelMatrix = glm::translate(glm::mat4(1), _position);
 	_invModelMatrix = glm::inverse(_modelMatrix);
 }
