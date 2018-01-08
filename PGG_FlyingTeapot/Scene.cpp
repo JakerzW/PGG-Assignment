@@ -79,6 +79,7 @@ Scene::Scene()
 	starsMaterial->SetLightPosition(_lightPosition);
 	_stars->SetMaterial(starsMaterial);
 	Mesh *starsMesh = new Mesh();
+	starsMesh->LoadOBJ("Stars4.obj");
 	_stars->SetMesh(starsMesh);
 	_stars->SetPosition(0.0f, 20.0f, 0.0f);
 
@@ -117,6 +118,7 @@ void Scene::Update( float deltaTs )
 	// This updates the camera's position and orientation based on those of the player
 
 	// Build the viewing matrix:
+	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, -3.0f, -15.0f)); // Provides offset away from player object
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Allows player to rotate camera using player object as pivot
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
 	_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
