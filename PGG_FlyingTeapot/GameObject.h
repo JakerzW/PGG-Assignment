@@ -54,7 +54,7 @@ protected:
 	// The model matrix must be built from this and the _position
 	glm::vec3 _rotation;
 
-
+	glm::vec3 _lightPosition = glm::vec3(0.0f, 10.0f, 0.0f);
 };
 
 

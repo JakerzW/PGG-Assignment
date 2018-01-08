@@ -39,7 +39,7 @@ Scene::Scene()
 	// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
 	shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
 	// Set the texture for the material
-	shipMaterial->SetTexture("FlyingTeapotColour.bmp");
+	shipMaterial->SetTexture("Asteroid.bmp");
 	// Set the lights position for the material
 	shipMaterial->SetLightPosition(_lightPosition);
 	// Assign the material to the game object
@@ -52,22 +52,10 @@ Scene::Scene()
 	_player->SetMesh(shipMesh);
 	// Set the position of the game object in the scene
 	_player->SetPosition(0.0f, 50.0f, 0.0f);
-	
-	//// Create and set up the ground
-	//_model = new GameObject();
-	//Material *modelMaterial = new Material();
-	//Mesh *groundMesh = new Mesh();
-	//modelMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	//modelMaterial->SetDiffuseColour(glm::vec3(0.8, 0.1, 0.1));
-	//modelMaterial->SetTexture("Stars.bmp");
-	//modelMaterial->SetLightPosition(_lightPosition);
-	//_model->SetMaterial(modelMaterial);
-	//groundMesh->LoadOBJ("ground.obj");
-	//_model->SetMesh(groundMesh);
 
 	// Create and set up the stars
 	_stars = new Stars();
-	Material *starsMaterial = new Material();
+	/*Material *starsMaterial = new Material();
 	starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	starsMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	starsMaterial->SetTexture("Stars.bmp");
@@ -75,7 +63,7 @@ Scene::Scene()
 	_stars->SetMaterial(starsMaterial);
 	Mesh *starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
-	_stars->SetMesh(starsMesh);
+	_stars->SetMesh(starsMesh);*/
 	_stars->SetPosition(0.0f, 0.0f, 0.0f); // x should be from -100 to 100
 
 	//Create and set up an asteroid
@@ -102,7 +90,8 @@ Scene::Scene()
 	Mesh *laserMesh = new Mesh();
 	laserMesh->LoadOBJ("Laser.obj");
 	_laser->SetMesh(laserMesh);
-	_laser->SetPosition(5.0f, 50.0f, 0.0f);
+	//_laser->SetPosition(5.0f, 50.0f, 0.0f);
+	_laser->SetPosition(_player->GetPosition().x + 1, _player->GetPosition().y, _player->GetPosition().z);
 
 }
 
