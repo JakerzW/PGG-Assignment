@@ -1,8 +1,9 @@
-﻿  Laser.cpp
+﻿  Scene.cpp
+Scene.cpp(11): warning C4305: '=': truncation from 'double' to 'float'
   Generating code
-  1 of 775 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 948 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    13 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   PGG_FlyingTeapot.vcxproj -> C:\Users\Jaker\Documents\GitHub\PGG-Assignment\Release\PGG_FlyingTeapot.exe
   PGG_FlyingTeapot.vcxproj -> C:\Users\Jaker\Documents\GitHub\PGG-Assignment\Release\PGG_FlyingTeapot.pdb (Full PDB)

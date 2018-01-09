@@ -13,6 +13,7 @@
 // iostream is so we can output error messages to console
 #include <iostream>
 #include <string>
+#include <vector>
 
 // An initialisation function, mainly for GLEW
 // This will also print to console the version of OpenGL we are using
@@ -143,9 +144,12 @@ int main(int argc, char *argv[])
 	// They will be used to control the camera
 	bool cmdRotateLeft = false, cmdRotateRight = false, cmdRotateUp = false, cmdRotateDown = false;
 	bool cmdRollLeft = false, cmdRollRight = false, cmdMoveForward = false, cmdMoveBackward = false, cmdThrustUp = false, cmdThrustDown = false;
-
+	bool cmdShoot = false, cmdHasShot = false, cmdReleaseAsteroid = false;
 	
 	Player *mainPlayer = myScene.GetPlayer();
+
+	std::vector<Laser*> allLasers;
+	std::vector<Asteroid*> allAsteroids;
 
 	// We are now preparing for our main loop (also known as the 'game loop')
 	// This loop will keep going round until we exit from our program by changing the bool 'go' to the value false
@@ -224,8 +228,10 @@ int main(int argc, char *argv[])
 					cmdThrustDown = true;
 					break;
 				case SDLK_SPACE:
-						//Insert shoot command
-						//mainPlayer->ClearRotations();
+					cmdShoot = true;
+					break;
+				case SDLK_TAB:
+					cmdReleaseAsteroid = true;
 					break;
 				case SDLK_HASH:
 					std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
@@ -271,6 +277,12 @@ int main(int argc, char *argv[])
 				case SDLK_PAGEDOWN:
 					cmdThrustDown = false;
 					break;
+				case SDLK_SPACE:
+				{
+					cmdShoot = false;
+					cmdHasShot = false;
+					break;
+				}
 				}
 				break;
 			}
@@ -322,8 +334,22 @@ int main(int argc, char *argv[])
 			mainPlayer->ChangeVerticalPos(0.0f);
 		}
 
+		if (cmdShoot & !cmdHasShot)
+		{
+			cmdHasShot = true;
+			// Insert new laser
+			Laser *laser = new Laser(mainPlayer);
+			allLasers.push_back(laser);
+		}
+		if (cmdReleaseAsteroid)
+		{
+			Asteroid *asteroid = new Asteroid();
+			allAsteroids.push_back(asteroid);
+			cmdReleaseAsteroid = false;
+		}
+
 		// Update the scene
-		myScene.Update(deltaTs);
+		myScene.Update(deltaTs, allLasers, allAsteroids);
 
 
 		// Draw our world
@@ -334,7 +360,7 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draw the scene
-		myScene.Draw();
+		myScene.Draw(allLasers, allAsteroids);
 
 
 		// This tells the renderer to actually show its contents to the screen

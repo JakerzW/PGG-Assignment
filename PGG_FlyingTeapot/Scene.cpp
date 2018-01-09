@@ -63,8 +63,8 @@ Scene::Scene()
 	_stars->SetMaterial(starsMaterial);
 	Mesh *starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
-	_stars->SetMesh(starsMesh);*/
-	//_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100
+	_stars->SetMesh(starsMesh);
+	//_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100*/
 
 	//Create and set up an asteroid
 	_asteroid = new Asteroid();
@@ -99,17 +99,25 @@ Scene::~Scene()
 	// You should neatly clean everything up here
 }
 
-void Scene::Update( float deltaTs )
+void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
 {
 	// Update the game object (this is currently hard-coded to rotate)
 	//_model->Update( deltaTs );
 	_stars->Update(deltaTs);
 	_player->Update(deltaTs);
-	_asteroid->Update(deltaTs);
-	_laser->Update(deltaTs);
+	for (size_t i = 0; i < allAsteroids.size(); i++)
+	{
+		allAsteroids.at(i)->Update(deltaTs);
+	}
+	//_asteroid->Update(deltaTs);
+	for (size_t i = 0; i < allLasers.size(); i++)
+	{
+		allLasers.at(i)->Update(deltaTs);
+	}
+	//_laser->Update(deltaTs);
 
 	glm::vec3 playerPos = _player->GetPosition();
-	glm::quat playerOrientation = _player->GetOrientation();
+	//glm::quat playerOrientation = _player->GetOrientation();
 
 
 	// This updates the camera's position and orientation based on those of the player
@@ -121,16 +129,20 @@ void Scene::Update( float deltaTs )
 	_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
 }
 
-void Scene::Draw()
+void Scene::Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
 {
 	// Draw that model, giving it the camera's position and projection
 	//_model->Draw(_viewMatrix,_projMatrix);
 	_stars->Draw(_viewMatrix,_projMatrix);
 	_player->Draw(_viewMatrix,_projMatrix);
-	_asteroid->Draw(_viewMatrix, _projMatrix);
-	_laser->Draw(_viewMatrix, _projMatrix);
-
-
+	for (size_t i = 0; i < allAsteroids.size(); i++)
+	{
+		allAsteroids.at(i)->Draw(_viewMatrix, _projMatrix);
+	}
+	for (size_t i = 0; i < allLasers.size(); i++)
+	{
+		allLasers.at(i)->Draw(_viewMatrix, _projMatrix);
+	}
 }
 
 

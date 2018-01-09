@@ -11,6 +11,7 @@
 #include <GLM/gtc/quaternion.hpp>
 
 #include <string>
+#include <vector>
 
 // The scene contains objects, the camera and light
 // It is responsible for coordinating these things
@@ -30,10 +31,10 @@ public:
 	void ChangeCameraAngleY( float value ) { _cameraAngleY += value; }
 
 	// Calls update on all objects in the scene
-	void Update( float deltaTs );
+	void Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids);
 
 	// Draws the scene from the camera's point of view
-	void Draw();
+	void Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids);
 
 
 	Player* GetPlayer() {return _player;}
