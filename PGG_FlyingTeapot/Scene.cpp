@@ -108,6 +108,12 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 	for (size_t i = 0; i < allAsteroids.size(); i++)
 	{
 		allAsteroids.at(i)->Update(deltaTs);
+		if (allAsteroids.at(i)->GetPosition().x < -20)
+		{
+			allAsteroids.at(i)->~Asteroid();
+			allAsteroids.erase(allAsteroids.begin() + i);
+			i--;
+		}
 	}
 	//_asteroid->Update(deltaTs);
 	for (size_t i = 0; i < allLasers.size(); i++)

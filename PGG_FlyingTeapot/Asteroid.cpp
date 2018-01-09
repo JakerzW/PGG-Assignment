@@ -2,13 +2,13 @@
 
 Asteroid::Asteroid()
 {
-	Material *asteroidMaterial = new Material();
+	asteroidMaterial = new Material();
 	asteroidMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	asteroidMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	asteroidMaterial->SetTexture("Asteroid.bmp");
 	asteroidMaterial->SetLightPosition(_lightPosition);
 	SetMaterial(asteroidMaterial);
-	Mesh *asteroidMesh = new Mesh();
+	asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	SetMesh(asteroidMesh);
 	SetPosition(30.0f, 50.0f, 0.0f);
@@ -17,7 +17,8 @@ Asteroid::Asteroid()
 
 Asteroid::~Asteroid()
 {
-
+	delete asteroidMaterial;
+	delete asteroidMesh;
 }
 
 void Asteroid::ChangeRoll(float value)

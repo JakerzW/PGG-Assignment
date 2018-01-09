@@ -26,4 +26,7 @@ class Asteroid : public GameObject
 		float _roll;
 		float _horizontalPos;
 		float _verticalPos;
+
+		Material *asteroidMaterial;
+		Mesh *asteroidMesh;
 };
