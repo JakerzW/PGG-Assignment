@@ -2,17 +2,17 @@
 
 Laser::Laser(Player *player)
 {
-	Material *laserMaterial = new Material();
-	laserMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	laserMaterial = new Material();
+	laserMaterial->LoadShaders("VertShader.txt", "StarsFragShader.txt");
 	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	laserMaterial->SetTexture("Laser.bmp");
 	laserMaterial->SetLightPosition(_lightPosition);
 	SetMaterial(laserMaterial);
-	Mesh *laserMesh = new Mesh();
+	laserMesh = new Mesh();
 	laserMesh->LoadOBJ("Laser.obj");
 	SetMesh(laserMesh);
 	SetPosition(player->GetPosition().x + 1, player->GetPosition().y, player->GetPosition().z);
-	_velocity = 3.0f;
+	_velocity = 0.25f;
 }
 
 Laser::~Laser()
