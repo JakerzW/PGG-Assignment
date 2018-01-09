@@ -15,7 +15,7 @@ Scene::Scene()
 	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0,0,-3.5f) );
 
 	// Set up a projection matrix
-	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 10000.0f);
+	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
 
 	// Position of the light, in world-space
 	_lightPosition = glm::vec3(0,10,0);
@@ -39,7 +39,7 @@ Scene::Scene()
 	// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
 	shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
 	// Set the texture for the material
-	shipMaterial->SetTexture("Asteroid.bmp");
+	shipMaterial->SetTexture("SpaceShip.bmp");
 	// Set the lights position for the material
 	shipMaterial->SetLightPosition(_lightPosition);
 	// Assign the material to the game object
@@ -47,7 +47,7 @@ Scene::Scene()
 	// Create a mesh for the player
 	Mesh *shipMesh = new Mesh();
 	// Load the obj file for the model
-	shipMesh->LoadOBJ("Ship.obj");
+	shipMesh->LoadOBJ("SpaceShip.obj");
 	// Set the mesh loaded from the obj file to the game object
 	_player->SetMesh(shipMesh);
 	// Set the position of the game object in the scene
@@ -80,8 +80,8 @@ Scene::Scene()
 	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);*/
 
 	//Create and set up an laser
-	_laser = new Laser();
-	Material *laserMaterial = new Material();
+	_laser = new Laser(_player);
+	/*Material *laserMaterial = new Material();
 	laserMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	laserMaterial->SetTexture("Laser.bmp");
@@ -90,7 +90,7 @@ Scene::Scene()
 	Mesh *laserMesh = new Mesh();
 	laserMesh->LoadOBJ("Laser.obj");
 	_laser->SetMesh(laserMesh);
-	_laser->SetPosition(_player->GetPosition().x + 1, _player->GetPosition().y, _player->GetPosition().z);
+	_laser->SetPosition(_player->GetPosition().x + 1, _player->GetPosition().y, _player->GetPosition().z);*/
 
 }
 

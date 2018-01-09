@@ -5,7 +5,8 @@ Stars::Stars()
 	Material *starsMaterial = new Material();
 	starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	starsMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	starsMaterial->SetTexture("Stars.bmp");
+	starsMaterial->SetSpecularColour(glm::vec3(1.0f, 1.0f, 1.0f));
+	starsMaterial->SetTexture("Stars3.bmp");
 	starsMaterial->SetLightPosition(_lightPosition);
 	SetMaterial(starsMaterial);
 	Mesh *starsMesh = new Mesh();
