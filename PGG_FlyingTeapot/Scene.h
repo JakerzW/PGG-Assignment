@@ -38,6 +38,8 @@ public:
 
 	bool GetGameStatus();
 
+	int GetNumberDestroyed();
+
 	Player* GetPlayer() {return _player;}
 
 
@@ -51,6 +53,8 @@ protected:
 	Laser *_laser;
 
 	bool _gameStatus;
+
+	int _numberDestroyed = 0;
 		
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;

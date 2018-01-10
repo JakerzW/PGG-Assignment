@@ -155,6 +155,10 @@ int main(int argc, char *argv[])
 	unsigned int releaseTime = 1000;
 	unsigned int previousRelease = 0;
 
+	int numberReleased = 0;
+
+	srand(time(NULL));
+
 	// We are now preparing for our main loop (also known as the 'game loop')
 	// This loop will keep going round until we exit from our program by changing the bool 'go' to the value false
 	// This loop is an important concept and forms the basis of most games you'll be writing
@@ -242,8 +246,8 @@ int main(int argc, char *argv[])
 				case SDLK_HASH:
 					//std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
 					//std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
-					std::cout << SDL_GetTicks() << std::endl;
-					
+					//std::cout << SDL_GetTicks() << std::endl;
+					std::cout << numberReleased << std::endl;
 					// Insert console output commands
 					break;
 				case SDLK_ESCAPE:
@@ -355,8 +359,15 @@ int main(int argc, char *argv[])
 		if (current > (previousRelease + releaseTime))
 		{
 			previousRelease = current;
+			// Reduce time between releases based on how many asteroids have been released
+			if (numberReleased < 100)
+			{
+				releaseTime -= 7;
+				numberReleased++;
+			}
+			// Create a new asteroid and add it to the vector
 			Asteroid *asteroid = new Asteroid();
-			allAsteroids.push_back(asteroid);
+			allAsteroids.push_back(asteroid);			
 		}
 
 		// Update the scene
@@ -389,7 +400,6 @@ int main(int argc, char *argv[])
 	}
 
 	// If we get outside the main game loop, it means our user has requested we exit
-
 
 	// Our cleanup phase, hopefully fairly self-explanatory ;)
 	SDL_GL_DeleteContext( glcontext );

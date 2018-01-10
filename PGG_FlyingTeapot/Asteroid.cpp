@@ -1,4 +1,5 @@
 #include "Asteroid.h"
+#include <time.h>
 
 Asteroid::Asteroid()
 {
@@ -11,12 +12,13 @@ Asteroid::Asteroid()
 	asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	SetMesh(asteroidMesh);
-	
 	// Set the position to be random across the z axis (the x axis on screen)
+	
 	float _zPos = (rand() / (float)RAND_MAX * 14) - 7;
 	SetPosition(30.0f, 50.0f, _zPos);
-	_velocity = 0.05f;
 	_size = 1.0f;
+
+
 }
 
 Asteroid::~Asteroid()
@@ -33,20 +35,25 @@ Asteroid::~Asteroid()
 
 	SetPosition(NULL, NULL, NULL);
 }
+//
+//void Asteroid::ChangeRoll(float value)
+//{
+//
+//}
+//
+//void Asteroid::ChangeHorizontalPos(float value)
+//{
+//
+//}
+//
+//void Asteroid::ChangeVerticalPos(float value)
+//{
+//
+//}
 
-void Asteroid::ChangeRoll(float value)
+void Asteroid::IncreaseVelocity(float newVelocity)
 {
-
-}
-
-void Asteroid::ChangeHorizontalPos(float value)
-{
-
-}
-
-void Asteroid::ChangeVerticalPos(float value)
-{
-
+	_velocity += newVelocity;
 }
 
 float Asteroid::GetRoll()

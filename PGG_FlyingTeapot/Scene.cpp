@@ -138,8 +138,10 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 	}
 
 	// Check for collisions between the lasers and asteroids
+	bool collision = false;
 	for (size_t a = 0; a < allAsteroids.size(); a++)
 	{
+		
 		float distanceBetweenAP = glm::distance(_player->GetPosition(), allAsteroids.at(a)->GetPosition());
 		float minDistance = (_player->GetSize() + allAsteroids.at(a)->GetSize());
 		if (distanceBetweenAP < minDistance)
@@ -148,6 +150,7 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 			_player->~Player();
 			allAsteroids.at(a)->~Asteroid();
 			_gameStatus = false;
+			break;
 		}
 
 		for (size_t l = 0; l < allLasers.size(); l++)
@@ -159,17 +162,19 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 			if (distanceBetweenAL < allAsteroids.at(a)->GetSize())
 			{
 				allLasers.at(l)->~Laser();
+				//allLasers.erase(allLasers.begin() + l);
 				allAsteroids.at(a)->~Asteroid();
+				//allAsteroids.erase(allAsteroids.begin() + a);
+				collision = true;
 				break;
 			}
 		}
+		
 	}
-	
-	//// Build the viewing matrix:
-	//_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
-	//_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Rotates camera into position
-	//_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
-	//_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
+	if (collision)
+	{
+		_numberDestroyed++;
+	}
 }
 
 void Scene::Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
@@ -199,6 +204,11 @@ void Scene::Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAstero
 bool Scene::GetGameStatus()
 {
 	return _gameStatus;
+}
+
+int Scene::GetNumberDestroyed()
+{
+	return _numberDestroyed;
 }
 
 
