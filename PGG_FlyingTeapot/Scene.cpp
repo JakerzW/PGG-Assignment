@@ -32,26 +32,26 @@ Scene::Scene()
 	
 	// Create a new game object for the player
 	_player = new Player();
-	// Create a material for the player
-	Material *shipMaterial = new Material();
-	// Load the shaders for the player's material
-	shipMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
-	shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
-	// Set the texture for the material
-	shipMaterial->SetTexture("SpaceShip.bmp");
-	// Set the lights position for the material
-	shipMaterial->SetLightPosition(_lightPosition);
-	// Assign the material to the game object
-	_player->SetMaterial(shipMaterial);
-	// Create a mesh for the player
-	Mesh *shipMesh = new Mesh();
-	// Load the obj file for the model
-	shipMesh->LoadOBJ("SpaceShip.obj");
-	// Set the mesh loaded from the obj file to the game object
-	_player->SetMesh(shipMesh);
-	// Set the position of the game object in the scene
-	_player->SetPosition(0.0f, 50.0f, 0.0f);
+	//// Create a material for the player
+	//Material *shipMaterial = new Material();
+	//// Load the shaders for the player's material
+	//shipMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	//// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
+	//shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
+	//// Set the texture for the material
+	//shipMaterial->SetTexture("SpaceShip.bmp");
+	//// Set the lights position for the material
+	//shipMaterial->SetLightPosition(_lightPosition);
+	//// Assign the material to the game object
+	//_player->SetMaterial(shipMaterial);
+	//// Create a mesh for the player
+	//Mesh *shipMesh = new Mesh();
+	//// Load the obj file for the model
+	//shipMesh->LoadOBJ("SpaceShip.obj");
+	//// Set the mesh loaded from the obj file to the game object
+	//_player->SetMesh(shipMesh);
+	//// Set the position of the game object in the scene
+	//_player->SetPosition(0.0f, 50.0f, 0.0f);
 
 	// Create and set up the stars
 	_stars = new Stars();
@@ -97,6 +97,9 @@ Scene::Scene()
 	_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleX, glm::vec3(1, 0, 0)); // Rotates camera into position
 	_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
 	_viewMatrix = glm::translate(_viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
+
+	// Set the status of the game, if this is ever false, the game will end
+	_gameStatus = true;
 }
 
 Scene::~Scene()
@@ -135,16 +138,25 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 	}
 
 	// Check for collisions between the lasers and asteroids
-	for (size_t l = 0; l < allLasers.size(); l++)
+	for (size_t a = 0; a < allAsteroids.size(); a++)
 	{
-		//bool collision = false;
-		for (size_t a = 0; a < allAsteroids.size(); a++)
+		float distanceBetweenAP = glm::distance(_player->GetPosition(), allAsteroids.at(a)->GetPosition());
+		float minDistance = (_player->GetSize() + allAsteroids.at(a)->GetSize());
+		if (distanceBetweenAP < minDistance)
+		{
+			// Destroy player and asteroid upon collision and end the game
+			_player->~Player();
+			allAsteroids.at(a)->~Asteroid();
+			_gameStatus = false;
+		}
+
+		for (size_t l = 0; l < allLasers.size(); l++)
 		{
 			//if collision, break loop and destroy laser and asteroid
-			float distanceBetween = glm::distance(allLasers.at(l)->GetPosition(), allAsteroids.at(a)->GetPosition());
+			float distanceBetweenAL = glm::distance(allLasers.at(l)->GetPosition(), allAsteroids.at(a)->GetPosition());
 
 			// If the distance between the points is less than the radius of thea asteroid, the objects must have collided
-			if (distanceBetween < 1.0f)
+			if (distanceBetweenAL < allAsteroids.at(a)->GetSize())
 			{
 				allLasers.at(l)->~Laser();
 				allAsteroids.at(a)->~Asteroid();
@@ -182,6 +194,11 @@ void Scene::Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAstero
 		}
 	}
 	
+}
+
+bool Scene::GetGameStatus()
+{
+	return _gameStatus;
 }
 
 

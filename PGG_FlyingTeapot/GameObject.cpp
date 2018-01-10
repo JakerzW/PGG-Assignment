@@ -15,6 +15,11 @@ GameObject::~GameObject()
 	// Do any clean up here
 }
 
+float GameObject::GetSize()
+{
+	return _size;
+}
+
 void GameObject::Update( float deltaTs )
 {
 	// Put any update code here

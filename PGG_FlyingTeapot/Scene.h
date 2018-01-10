@@ -36,6 +36,7 @@ public:
 	// Draws the scene from the camera's point of view
 	void Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids);
 
+	bool GetGameStatus();
 
 	Player* GetPlayer() {return _player;}
 
@@ -49,6 +50,7 @@ protected:
 	Asteroid *_asteroid;
 	Laser *_laser;
 
+	bool _gameStatus;
 		
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;

@@ -159,10 +159,12 @@ int main(int argc, char *argv[])
 	//   * Update our world
 	//   * Draw our world
 	// We will come back to this in later lectures
-	bool go = true;
-	while( go )
+	bool gameStatus = true;
+	while(gameStatus)
 	{
-
+		gameStatus = myScene.GetGameStatus();
+		if (!gameStatus)
+			break;
 		// Here we are going to check for any input events
 		// Basically when you press the keyboard or move the mouse, the parameters are stored as something called an 'event'
 		// SDL has a queue of events
@@ -183,7 +185,7 @@ int main(int argc, char *argv[])
 				// The event type is SDL_QUIT
 				// This means we have been asked to quit - probably the user clicked on the 'x' at the top right corner of the window
 				// To quit we need to set our 'go' bool to false so that we can escape out of the game loop
-				go = false;
+				gameStatus = false;
 				break;
 
 				// If you want to learn more about event handling and different SDL event types, see:
@@ -237,6 +239,9 @@ int main(int argc, char *argv[])
 					std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
 					//std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
 					// Insert console output commands
+					break;
+				case SDLK_ESCAPE:
+					gameStatus = false;
 					break;
 				}
 				break;
@@ -373,6 +378,8 @@ int main(int argc, char *argv[])
 		{
 			SDL_Delay((unsigned int) (((1.0f/50.0f) - deltaTs)*1000.0f) );
 		}
+
+		
 	}
 
 	// If we get outside the main game loop, it means our user has requested we exit

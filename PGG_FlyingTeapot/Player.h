@@ -20,6 +20,11 @@ class Player : public GameObject
 		glm::quat GetOrientation();
 	
 	protected:
+		// Create a material for the player
+		Material *shipMaterial = new Material();
+		// Create a mesh for the player
+		Mesh *shipMesh = new Mesh();
+
 		glm::vec3 _velocity;
 		glm::quat _orientation;
 		glm::vec3 _originalFacingDir;

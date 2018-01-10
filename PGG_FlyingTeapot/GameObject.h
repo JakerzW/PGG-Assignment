@@ -29,6 +29,8 @@ public:
 
 	glm::vec3 GetPosition() {return _position;}
 	
+	float GetSize();
+
 	// Game object is current hard-coded to rotate
 	virtual void Update( float deltaTs );
 

@@ -11,7 +11,10 @@ Asteroid::Asteroid()
 	asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	SetMesh(asteroidMesh);
-	SetPosition(30.0f, 50.0f, 0.0f);
+	
+	// Set the position to be random across the z axis (the x axis on screen)
+	float _zPos = (rand() / (float)RAND_MAX * 14) - 7;
+	SetPosition(30.0f, 50.0f, _zPos);
 	_velocity = 0.05f;
 	_size = 1.0f;
 }

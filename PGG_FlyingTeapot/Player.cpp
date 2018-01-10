@@ -2,6 +2,24 @@
 
 Player::Player()
 {
+	// Load the shaders for the player's material
+	shipMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
+	shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
+	// Set the texture for the material
+	shipMaterial->SetTexture("SpaceShip.bmp");
+	// Set the lights position for the material
+	shipMaterial->SetLightPosition(_lightPosition);
+	// Assign the material to the game object
+	SetMaterial(shipMaterial);	
+	// Load the obj file for the model
+	shipMesh->LoadOBJ("SpaceShip.obj");
+	// Set the mesh loaded from the obj file to the game object
+	SetMesh(shipMesh);
+	// Set the position of the game object in the scene
+	SetPosition(0.0f, 50.0f, 0.0f);
+
+	// Set the initial roll
 	_roll = 0.0f;	
 	
 	// Initialise with direction object is facing
@@ -11,12 +29,22 @@ Player::Player()
 	// Give it an initial velocity, otherwise it falls out the sky
 	_velocity = glm::vec3(15.0f,0,0);
 
+	// Set the size of the player for collision purposes
 	_size = 0.8f;
 }
 
 Player::~Player()
 {
+	shipMaterial = NULL;
+	delete shipMaterial;
+	SetMaterial(NULL);
+	delete _material;
+	shipMesh = NULL;
+	delete shipMesh;
+	SetMesh(NULL);
+	delete _mesh;
 
+	SetPosition(NULL, NULL, NULL);
 }
 
 void Player::ChangeRoll(float value)
