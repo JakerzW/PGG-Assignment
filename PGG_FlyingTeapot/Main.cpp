@@ -129,6 +129,7 @@ int main(int argc, char *argv[])
 	unsigned int lastTime = SDL_GetTicks();
 
 	
+	
 	// Enable the depth test to make sure triangles in front are always in front no matter the order they are drawn
 	// When you do this, don't forget to clear the depth buffer at the start of each frame - otherwise you just get an empty screen!
 	glEnable(GL_DEPTH_TEST);
@@ -144,12 +145,15 @@ int main(int argc, char *argv[])
 	// They will be used to control the camera
 	bool cmdRotateLeft = false, cmdRotateRight = false, cmdRotateUp = false, cmdRotateDown = false;
 	bool cmdRollLeft = false, cmdRollRight = false, cmdMoveForward = false, cmdMoveBackward = false, cmdThrustUp = false, cmdThrustDown = false;
-	bool cmdShoot = false, cmdHasShot = false, cmdReleaseAsteroid = false;
+	bool cmdShoot = false, cmdHasShot = false;
 	
 	Player *mainPlayer = myScene.GetPlayer();
 
 	std::vector<Laser*> allLasers;
 	std::vector<Asteroid*> allAsteroids;
+
+	unsigned int releaseTime = 1000;
+	unsigned int previousRelease = 0;
 
 	// We are now preparing for our main loop (also known as the 'game loop')
 	// This loop will keep going round until we exit from our program by changing the bool 'go' to the value false
@@ -233,11 +237,13 @@ int main(int argc, char *argv[])
 					cmdShoot = true;
 					break;
 				case SDLK_TAB:
-					cmdReleaseAsteroid = true;
+					//cmdReleaseAsteroid = true;
 					break;
 				case SDLK_HASH:
-					std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
+					//std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
 					//std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
+					std::cout << SDL_GetTicks() << std::endl;
+					
 					// Insert console output commands
 					break;
 				case SDLK_ESCAPE:
@@ -342,15 +348,15 @@ int main(int argc, char *argv[])
 		if (cmdShoot & !cmdHasShot)
 		{
 			cmdHasShot = true;
-			// Insert new laser
 			Laser *laser = new Laser(mainPlayer);
 			allLasers.push_back(laser);
 		}
-		if (cmdReleaseAsteroid)
+
+		if (current > (previousRelease + releaseTime))
 		{
+			previousRelease = current;
 			Asteroid *asteroid = new Asteroid();
 			allAsteroids.push_back(asteroid);
-			cmdReleaseAsteroid = false;
 		}
 
 		// Update the scene
