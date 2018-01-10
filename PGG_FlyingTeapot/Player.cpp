@@ -11,6 +11,7 @@ Player::Player()
 	// Give it an initial velocity, otherwise it falls out the sky
 	_velocity = glm::vec3(15.0f,0,0);
 
+	_size = 0.8f;
 }
 
 Player::~Player()

@@ -55,6 +55,9 @@ protected:
 	glm::vec3 _rotation;
 
 	glm::vec3 _lightPosition = glm::vec3(0.0f, 10.0f, 0.0f);
+	
+	//Radius of collision box
+	float _size;
 };
 
 

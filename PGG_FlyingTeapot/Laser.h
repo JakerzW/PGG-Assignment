@@ -12,6 +12,6 @@ class Laser : public GameObject
 
 	protected:
 		float _velocity;
-		Material *laserMaterial;
-		Mesh *laserMesh;
+		Material *laserMaterial = new Material();
+		Mesh *laserMesh = new Mesh();
 };

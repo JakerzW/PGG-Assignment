@@ -67,8 +67,8 @@ Scene::Scene()
 	//_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100*/
 
 	//Create and set up an asteroid
-	_asteroid = new Asteroid();
-	/*Material *asteroidMaterial = new Material();
+	/*_asteroid = new Asteroid();
+	Material *asteroidMaterial = new Material();
 	asteroidMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	asteroidMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	asteroidMaterial->SetTexture("Asteroid.bmp");
@@ -77,11 +77,11 @@ Scene::Scene()
 	Mesh *asteroidMesh = new Mesh();
 	asteroidMesh->LoadOBJ("Asteroid.obj");
 	_asteroid->SetMesh(asteroidMesh);
-	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);*/
+	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);
 
 	//Create and set up an laser
 	_laser = new Laser(_player);
-	/*Material *laserMaterial = new Material();
+	Material *laserMaterial = new Material();
 	laserMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	laserMaterial->SetTexture("Laser.bmp");
@@ -92,6 +92,11 @@ Scene::Scene()
 	_laser->SetMesh(laserMesh);
 	_laser->SetPosition(_player->GetPosition().x + 1, _player->GetPosition().y, _player->GetPosition().z);*/
 
+	// Build the viewing matrix:
+	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
+	_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleX, glm::vec3(1, 0, 0)); // Rotates camera into position
+	_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
+	_viewMatrix = glm::translate(_viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
 }
 
 Scene::~Scene()
@@ -101,60 +106,82 @@ Scene::~Scene()
 
 void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
 {
-	// Update the game object (this is currently hard-coded to rotate)
-	//_model->Update( deltaTs );
+	// Update the game objects
 	_stars->Update(deltaTs);
 	_player->Update(deltaTs);
 
-	//Update all the asteroids on the screen and delete any that are off screen
+	// Update all the asteroids on the screen and delete any that are off screen
 	for (size_t i = 0; i < allAsteroids.size(); i++)
 	{
 		allAsteroids.at(i)->Update(deltaTs);
 		if (allAsteroids.at(i)->GetPosition().x < -20)
 		{
+			//delete allAsteroids.at(i);
+			//allAsteroids.erase(allAsteroids.begin() + i);
+
 			allAsteroids.at(i)->~Asteroid();
-			allAsteroids.erase(allAsteroids.begin() + i);
 		}
 	}
 
-	//Update all the lasers in the scene and delete any that are off screen
+	// Update all the lasers in the scene and delete any that are off screen
 	for (size_t i = 0; i < allLasers.size(); i++)
 	{
 		allLasers.at(i)->Update(deltaTs);
 		if (allLasers.at(i)->GetPosition().x > 20)
 		{
 			allLasers.at(i)->~Laser();
-			allLasers.erase(allLasers.begin() + i);
+			//allLasers.pop_back();
 		}
 	}
 
-	glm::vec3 playerPos = _player->GetPosition();
-	//glm::quat playerOrientation = _player->GetOrientation();
+	// Check for collisions between the lasers and asteroids
+	for (size_t l = 0; l < allLasers.size(); l++)
+	{
+		//bool collision = false;
+		for (size_t a = 0; a < allAsteroids.size(); a++)
+		{
+			//if collision, break loop and destroy laser and asteroid
+			float distanceBetween = glm::distance(allLasers.at(l)->GetPosition(), allAsteroids.at(a)->GetPosition());
 
-
-	// This updates the camera's position and orientation based on those of the player
-
-	// Build the viewing matrix:
-	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
-	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Rotates camera into position
-	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
-	_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
+			// If the distance between the points is less than the radius of thea asteroid, the objects must have collided
+			if (distanceBetween < 1.0f)
+			{
+				allLasers.at(l)->~Laser();
+				allAsteroids.at(a)->~Asteroid();
+				break;
+			}
+		}
+	}
+	
+	//// Build the viewing matrix:
+	//_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
+	//_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Rotates camera into position
+	//_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
+	//_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
 }
 
 void Scene::Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
 {
-	// Draw that model, giving it the camera's position and projection
-	//_model->Draw(_viewMatrix,_projMatrix);
+	// Draw the objects, giving them the camera's position and projection
 	_stars->Draw(_viewMatrix,_projMatrix);
 	_player->Draw(_viewMatrix,_projMatrix);
-	for (size_t i = 0; i < allAsteroids.size(); i++)
+
+	if (allAsteroids.size() > 0)
 	{
-		allAsteroids.at(i)->Draw(_viewMatrix, _projMatrix);
+		for (size_t i = 0; i < allAsteroids.size(); i++)
+		{
+			allAsteroids.at(i)->Draw(_viewMatrix, _projMatrix);
+		}
 	}
-	for (size_t i = 0; i < allLasers.size(); i++)
+
+	if (allLasers.size() > 0)
 	{
-		allLasers.at(i)->Draw(_viewMatrix, _projMatrix);
+		for (size_t i = 0; i < allLasers.size(); i++)
+		{
+			allLasers.at(i)->Draw(_viewMatrix, _projMatrix);
+		}
 	}
+	
 }
 
 
