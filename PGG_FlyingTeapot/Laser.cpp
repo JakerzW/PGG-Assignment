@@ -17,8 +17,11 @@ Laser::Laser(Player *player)
 
 Laser::~Laser()
 {
+	// Delete all materials and meshes used by the laser
 	delete laserMaterial;
+	delete _material;
 	delete laserMesh;
+	delete _mesh;
 }
 
 void Laser::Update(float deltaTs)

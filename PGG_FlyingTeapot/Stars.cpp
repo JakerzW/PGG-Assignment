@@ -2,14 +2,14 @@
 
 Stars::Stars()
 {
-	Material *starsMaterial = new Material();
+	starsMaterial = new Material();
 	starsMaterial->LoadShaders("VertShader.txt", "StarsFragShader.txt");
 	starsMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	starsMaterial->SetSpecularColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	starsMaterial->SetTexture("Stars.bmp");
 	starsMaterial->SetLightPosition(_lightPosition);
 	SetMaterial(starsMaterial);
-	Mesh *starsMesh = new Mesh();
+	starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
 	SetMesh(starsMesh);
 
@@ -19,8 +19,11 @@ Stars::Stars()
 
 Stars::~Stars()
 {
-	/*SetMaterial(NULL);
-	SetMesh(NULL);*/
+	// Delete all the materials and meshes used by the stars
+	delete starsMaterial;
+	delete _material;
+	delete starsMesh;
+	delete _mesh;
 }
 
 void Stars::Update(float deltaTs)

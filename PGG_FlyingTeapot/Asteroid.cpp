@@ -17,8 +17,11 @@ Asteroid::Asteroid()
 
 Asteroid::~Asteroid()
 {
+	// Delete all materials and meshes used by the asteroid
 	delete asteroidMaterial;
+	delete _material;
 	delete asteroidMesh;
+	delete _mesh;
 }
 
 void Asteroid::ChangeRoll(float value)

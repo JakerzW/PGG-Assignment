@@ -12,4 +12,7 @@ class Stars : public GameObject
 
 	protected:
 		float _velocity;
+
+		Material *starsMaterial;
+		Mesh *starsMesh;
 };

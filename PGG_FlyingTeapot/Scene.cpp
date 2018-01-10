@@ -105,6 +105,8 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 	//_model->Update( deltaTs );
 	_stars->Update(deltaTs);
 	_player->Update(deltaTs);
+
+	//Update all the asteroids on the screen and delete any that are off screen
 	for (size_t i = 0; i < allAsteroids.size(); i++)
 	{
 		allAsteroids.at(i)->Update(deltaTs);
@@ -112,15 +114,19 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 		{
 			allAsteroids.at(i)->~Asteroid();
 			allAsteroids.erase(allAsteroids.begin() + i);
-			i--;
 		}
 	}
-	//_asteroid->Update(deltaTs);
+
+	//Update all the lasers in the scene and delete any that are off screen
 	for (size_t i = 0; i < allLasers.size(); i++)
 	{
 		allLasers.at(i)->Update(deltaTs);
+		if (allLasers.at(i)->GetPosition().x > 20)
+		{
+			allLasers.at(i)->~Laser();
+			allLasers.erase(allLasers.begin() + i);
+		}
 	}
-	//_laser->Update(deltaTs);
 
 	glm::vec3 playerPos = _player->GetPosition();
 	//glm::quat playerOrientation = _player->GetOrientation();
@@ -130,7 +136,7 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 
 	// Build the viewing matrix:
 	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
-	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Allows player to rotate camera using player object as pivot
+	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleX,glm::vec3(1,0,0)); // Rotates camera into position
 	_viewMatrix = glm::rotate(_viewMatrix,_cameraAngleY,glm::vec3(0,1,0));
 	_viewMatrix = glm::translate( _viewMatrix, -glm::vec3(0.0f, 50.0f, 0.0f)); // Move to player's position
 }
