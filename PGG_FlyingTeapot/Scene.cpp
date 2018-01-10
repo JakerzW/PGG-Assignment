@@ -163,9 +163,13 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 			{
 				allLasers.at(l)->~Laser();
 				//allLasers.erase(allLasers.begin() + l);
-				allAsteroids.at(a)->~Asteroid();
-				//allAsteroids.erase(allAsteroids.begin() + a);
-				collision = true;
+				if (allAsteroids.at(a)->GetDestructable())
+				{
+					allAsteroids.at(a)->~Asteroid();
+					//allAsteroids.erase(allAsteroids.begin() + a);
+					collision = true;
+				}
+				
 				break;
 			}
 		}

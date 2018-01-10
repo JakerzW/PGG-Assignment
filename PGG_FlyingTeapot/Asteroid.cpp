@@ -6,7 +6,16 @@ Asteroid::Asteroid()
 	asteroidMaterial = new Material();
 	asteroidMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	asteroidMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	asteroidMaterial->SetTexture("Asteroid.bmp");
+	if ((rand() % 3 + 1) == 1)
+	{
+		asteroidMaterial->SetTexture("Asteroid2.bmp");
+		_destructable = false;
+	}
+	else
+	{
+		asteroidMaterial->SetTexture("Asteroid.bmp");
+		_destructable = true;
+	}	
 	asteroidMaterial->SetLightPosition(_lightPosition);
 	SetMaterial(asteroidMaterial);
 	asteroidMesh = new Mesh();
@@ -17,8 +26,6 @@ Asteroid::Asteroid()
 	float _zPos = (rand() / (float)RAND_MAX * 14) - 7;
 	SetPosition(30.0f, 50.0f, _zPos);
 	_size = 1.0f;
-
-
 }
 
 Asteroid::~Asteroid()
@@ -64,6 +71,11 @@ float Asteroid::GetRoll()
 glm::quat Asteroid::GetOrientation()
 {
 	return _orientation;
+}
+
+bool Asteroid::GetDestructable()
+{
+	return _destructable;
 }
 
 void Asteroid::Update(float deltaTs)

@@ -18,6 +18,8 @@ class Asteroid : public GameObject
 
 		float GetRoll();
 		glm::quat GetOrientation();
+		bool GetDestructable();
+
 	protected:
 		float _velocity = 0.05f;
 		glm::quat _orientation;
@@ -30,4 +32,6 @@ class Asteroid : public GameObject
 
 		Material *asteroidMaterial;
 		Mesh *asteroidMesh;
+
+		bool _destructable;
 };
