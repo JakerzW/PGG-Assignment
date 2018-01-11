@@ -3,6 +3,7 @@
 Stars::Stars()
 {
 	starsMaterial = new Material();
+	// Stars needs a different shader as we just want the plain texture to show up and not have any lighting effects on it
 	starsMaterial->LoadShaders("VertShader.txt", "StarsFragShader.txt");
 	starsMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	starsMaterial->SetSpecularColour(glm::vec3(1.0f, 1.0f, 1.0f));

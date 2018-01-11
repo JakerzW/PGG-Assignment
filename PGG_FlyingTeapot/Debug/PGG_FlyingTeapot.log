@@ -1,4 +1,4 @@
-﻿  Scene.cpp
-d:\documents\university\year 2\pgg\pgg assignment\pgg_flyingteapot\scene.cpp(11): warning C4305: '=': truncation from 'double' to 'float'
+﻿  Main.cpp
+d:\documents\university\year 2\pgg\pgg assignment\pgg_flyingteapot\main.cpp(124): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   PGG_FlyingTeapot.vcxproj -> D:\Documents\University\Year 2\PGG\PGG Assignment\Debug\PGG_FlyingTeapot.exe
   PGG_FlyingTeapot.vcxproj -> D:\Documents\University\Year 2\PGG\PGG Assignment\Debug\PGG_FlyingTeapot.pdb (Full PDB)

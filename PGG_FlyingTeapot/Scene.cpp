@@ -84,6 +84,9 @@ void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<As
 		{
 			// Destroy player upon collision and end the game
 			delete _player;
+			delete allAsteroids.at(a);
+			allAsteroids.erase(allAsteroids.begin() + a);
+			a--;
 			_gameStatus = false;
 			break;
 		}
@@ -99,13 +102,13 @@ void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<As
 			{
 				delete allLasers.at(l);
 				allLasers.erase(allLasers.begin() + l);
-				if (l > 0) l--;
+				l--;
 				// Only delete the asteroid if it can be destroyed
 				if (allAsteroids.at(a)->GetDestructable())
 				{
 					delete allAsteroids.at(a);
 					allAsteroids.erase(allAsteroids.begin() + a);
-					if (a > 0) a--;
+					a--;
 					collision = true;
 				}
 				break;

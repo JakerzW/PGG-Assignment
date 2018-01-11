@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
 	bool cmdShoot = false, cmdHasShot = false, cmdSlowDown = false;
 	
 	// Create the player
+	// Look in Player.cpp to see how I'm creating game objects
 	Player *mainPlayer = myScene.GetPlayer();
 
 	// Create the vectors to store all of the lasers and asteroids of which there will be multiple
@@ -350,7 +351,6 @@ int main(int argc, char *argv[])
 				numberReleased++;
 			}
 			// Create a new asteroid and add it to the vector
-			// Look in Asteroid.cpp to see how I'm creating game objects
 			Asteroid *asteroid = new Asteroid();
 			allAsteroids.push_back(asteroid);			
 		}
@@ -358,8 +358,15 @@ int main(int argc, char *argv[])
 		// Update the scene
 		myScene.Update(deltaTs, allLasers, allAsteroids);
 
+		// Check that the game status is still valid
+		if (!myScene.GetGameStatus())
+		{
+			// If not then we need to exit the loop before we draw
+			gameStatus = false;
+			break;
+		}
 
-		// Draw our world
+		// Now we need to draw our world
 
 		// Specify the colour to clear the framebuffer to
 		glClearColor(0.0f,0.0f,0.0f,0.0f);

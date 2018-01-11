@@ -3,6 +3,7 @@
 Laser::Laser(Player *player)
 {
 	laserMaterial = new Material();
+	// Laser needs a different shader as we just want the plain texture to show up and not have any lighting effects on it
 	laserMaterial->LoadShaders("VertShader.txt", "StarsFragShader.txt");
 	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	laserMaterial->SetTexture("Laser.bmp");

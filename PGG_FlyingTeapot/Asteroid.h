@@ -11,11 +11,6 @@ class Asteroid : public GameObject
 
 		virtual void Update(float deltaTs);
 
-		/*void ChangeRoll(float value);
-		void ChangeHorizontalPos(float value);
-		void ChangeVerticalPos(float value);*/
-		void IncreaseVelocity(float newVelocity);
-
 		float GetRoll();
 		glm::quat GetOrientation();
 		bool GetDestructable();

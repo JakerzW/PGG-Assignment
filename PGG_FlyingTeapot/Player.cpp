@@ -35,16 +35,8 @@ Player::Player()
 
 Player::~Player()
 {
-	shipMaterial = NULL;
 	delete shipMaterial;
-	SetMaterial(NULL);
-	delete _material;
-	shipMesh = NULL;
 	delete shipMesh;
-	SetMesh(NULL);
-	delete _mesh;
-
-	SetPosition(NULL, NULL, NULL);
 }
 
 void Player::ChangeRoll(float value)
