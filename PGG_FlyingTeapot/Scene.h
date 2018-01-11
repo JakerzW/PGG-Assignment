@@ -14,61 +14,55 @@
 #include <vector>
 
 // The scene contains objects, the camera and light
-// It is responsible for coordinating these things
 class Scene
 {
-public:
+	public:	
+		Scene();
+		~Scene();
 
-	
-	// Currently the scene is set up in the constructor
-	// This means the object(s) are loaded, given materials and positions as well as the camera and light
-	Scene();
-	~Scene();
+		// Use these to adjust the camera's orientation
+		void ChangeCameraAngleX( float value ) { _cameraAngleX += value; }
+		void ChangeCameraAngleY( float value ) { _cameraAngleY += value; }
 
-	// Use these to adjust the camera's orientation
-	// Camera is currently set up to rotate about the world-space origin NOT the camera's origin
-	void ChangeCameraAngleX( float value ) { _cameraAngleX += value; }
-	void ChangeCameraAngleY( float value ) { _cameraAngleY += value; }
+		// Calls update on all objects in the scene
+		void Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids);
 
-	// Calls update on all objects in the scene
-	void Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids);
+		// Draws the scene from the camera's point of view
+		void Draw(std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids);
 
-	// Draws the scene from the camera's point of view
-	void Draw(std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids);
+		// Returns the gameStatus (used by main)
+		bool GetGameStatus();
 
-	bool GetGameStatus();
+		// Returns the number of asteroids destroyed
+		int GetNumberDestroyed();
 
-	int GetNumberDestroyed();
-
-	Player* GetPlayer() {return _player;}
+		// Returns the player
+		Player* GetPlayer() {return _player;}
 
 
-protected:
+	protected:
+		// The background and player
+		Stars *_stars;
+		Player *_player;
 
-	// Currently one object, this could be a list of objects!
-	GameObject *_model;
-	Stars *_stars;
-	Player *_player;
-	Asteroid *_asteroid;
-	Laser *_laser;
+		// Scene's version of the gameStatus boolean to pass back for collisions
+		bool _gameStatus;
 
-	bool _gameStatus;
-
-	int _numberDestroyed = 0;
+		// The number of asteroids destroyed
+		int _numberDestroyed = 0;
 		
-	// This matrix represents the camera's position and orientation
-	glm::mat4 _viewMatrix;
+		// This matrix represents the camera's position and orientation
+		glm::mat4 _viewMatrix;
 	
-	// This matrix is like the camera's lens
-	glm::mat4 _projMatrix;
+		// This matrix is like the camera's lens
+		glm::mat4 _projMatrix;
 
-	// Current rotation information about the camera
-	float _cameraAngleX, _cameraAngleY;
+		// Current rotation information about the camera
+		float _cameraAngleX, _cameraAngleY;
 
-	// Position of the single point-light in the scene
-	glm::vec3 _lightPosition;
+		// Position of the single point-light in the scene
+		glm::vec3 _lightPosition;
 
-	glm::quat _cameraOrientation;
-
-
+		// The orientation of the camera
+		glm::quat _cameraOrientation;
 };

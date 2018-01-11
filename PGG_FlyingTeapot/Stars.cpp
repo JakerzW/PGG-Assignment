@@ -12,7 +12,6 @@ Stars::Stars()
 	starsMesh = new Mesh();
 	starsMesh->LoadOBJ("Stars.obj");
 	SetMesh(starsMesh);
-
 	SetPosition(100.0f, 0.0f, 0.0f);
 	_velocity = 0.3f;
 }
@@ -26,7 +25,7 @@ Stars::~Stars()
 
 void Stars::Update(float deltaTs)
 {
-	// Replace this with creation of a new quad
+	// Reset the position to give the effect of infinite stars
 	if (GetPosition().x < -100.0f)
 	{
 		SetPosition(100.0f, 0.0f, 0.0f);

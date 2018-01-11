@@ -8,6 +8,7 @@
 
 Scene::Scene()
 {
+	// Set the angles for the camera so it is in a top down position
 	_cameraAngleX = 1.5f, _cameraAngleY = PI_2;
 
 	// Set up the viewing matrix
@@ -18,79 +19,13 @@ Scene::Scene()
 	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
 
 	// Position of the light, in world-space
-	_lightPosition = glm::vec3(0,10,0);
-
-	// Create a game object
-	// This needs a material and a mesh
-	// Create the material for the game object
-	// Shaders are now in files
-	// Create the material for the game object
-	// Shaders are now in files
-	// The mesh is the geometry for the object
-	// Load from OBJ file. This must have triangulated geometry
-	//modelMesh->LoadOBJ("spaceship.obj"); 
+	_lightPosition = glm::vec3(0,10,0); 
 	
 	// Create a new game object for the player
 	_player = new Player();
-	//// Create a material for the player
-	//Material *shipMaterial = new Material();
-	//// Load the shaders for the player's material
-	//shipMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	//// Set the basic colour for the material (Use 1,1,1 to just use the texture colour)
-	//shipMaterial->SetDiffuseColour(glm::vec3(1.0, 1.0, 1.0));
-	//// Set the texture for the material
-	//shipMaterial->SetTexture("SpaceShip.bmp");
-	//// Set the lights position for the material
-	//shipMaterial->SetLightPosition(_lightPosition);
-	//// Assign the material to the game object
-	//_player->SetMaterial(shipMaterial);
-	//// Create a mesh for the player
-	//Mesh *shipMesh = new Mesh();
-	//// Load the obj file for the model
-	//shipMesh->LoadOBJ("SpaceShip.obj");
-	//// Set the mesh loaded from the obj file to the game object
-	//_player->SetMesh(shipMesh);
-	//// Set the position of the game object in the scene
-	//_player->SetPosition(0.0f, 50.0f, 0.0f);
 
 	// Create and set up the stars
 	_stars = new Stars();
-	/*Material *starsMaterial = new Material();
-	starsMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	starsMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	starsMaterial->SetTexture("Stars.bmp");
-	starsMaterial->SetLightPosition(_lightPosition);
-	_stars->SetMaterial(starsMaterial);
-	Mesh *starsMesh = new Mesh();
-	starsMesh->LoadOBJ("Stars.obj");
-	_stars->SetMesh(starsMesh);
-	//_stars->SetPosition(100.0f, 0.0f, 0.0f); // x should be from -100 to 100*/
-
-	//Create and set up an asteroid
-	/*_asteroid = new Asteroid();
-	Material *asteroidMaterial = new Material();
-	asteroidMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	asteroidMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	asteroidMaterial->SetTexture("Asteroid.bmp");
-	asteroidMaterial->SetLightPosition(_lightPosition);
-	_asteroid->SetMaterial(asteroidMaterial);
-	Mesh *asteroidMesh = new Mesh();
-	asteroidMesh->LoadOBJ("Asteroid.obj");
-	_asteroid->SetMesh(asteroidMesh);
-	_asteroid->SetPosition(10.0f, 50.0f, 0.0f);
-
-	//Create and set up an laser
-	_laser = new Laser(_player);
-	Material *laserMaterial = new Material();
-	laserMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	laserMaterial->SetTexture("Laser.bmp");
-	laserMaterial->SetLightPosition(_lightPosition);
-	_laser->SetMaterial(laserMaterial);
-	Mesh *laserMesh = new Mesh();
-	laserMesh->LoadOBJ("Laser.obj");
-	_laser->SetMesh(laserMesh);
-	_laser->SetPosition(_player->GetPosition().x + 1, _player->GetPosition().y, _player->GetPosition().z);*/
 
 	// Build the viewing matrix:
 	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -5.0f, -15.0f)); // Provides offset away from player object
@@ -104,7 +39,7 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	// You should neatly clean everything up here
+	
 }
 
 void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids)
@@ -141,8 +76,9 @@ void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<As
 	bool collision = false;
 	for (size_t a = 0; a < allAsteroids.size(); a++)
 	{
-		
+		// Find the distance between the player and the current asteroid
 		float distanceBetweenAP = glm::distance(_player->GetPosition(), allAsteroids.at(a)->GetPosition());
+		// Find the minimum distance between the player and asteroid (any less than this and the player should be destroyed)
 		float minDistance = (_player->GetSize() + allAsteroids.at(a)->GetSize());
 		if (distanceBetweenAP < minDistance)
 		{
@@ -152,17 +88,19 @@ void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<As
 			break;
 		}
 
+		// Go through all the lasers to check for collisions against the asteroids
 		for (size_t l = 0; l < allLasers.size(); l++)
 		{
-			//if collision, break loop and destroy laser and asteroid
+			// If collision, break loop and destroy laser and asteroid
+			// Get the distance between the current laser and the current asteroid
 			float distanceBetweenAL = glm::distance(allLasers.at(l)->GetPosition(), allAsteroids.at(a)->GetPosition());
-
-			// If the distance between the points is less than the radius of thea asteroid, the objects must have collided
+			// If the distance between the points is less than the radius of the asteroid, the objects must have collided
 			if (distanceBetweenAL < allAsteroids.at(a)->GetSize())
 			{
 				delete allLasers.at(l);
 				allLasers.erase(allLasers.begin() + l);
 				if (l > 0) l--;
+				// Only delete the asteroid if it can be destroyed
 				if (allAsteroids.at(a)->GetDestructable())
 				{
 					delete allAsteroids.at(a);
@@ -175,6 +113,7 @@ void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<As
 		}
 		
 	}
+	// Increment the number destroyed if there is a collision between a laser and a destructable asteroid
 	if (collision)
 	{
 		_numberDestroyed++;
@@ -184,9 +123,11 @@ void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<As
 void Scene::Draw(std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids)
 {
 	// Draw the objects, giving them the camera's position and projection
+	// Draw the stars and player
 	_stars->Draw(_viewMatrix,_projMatrix);
 	_player->Draw(_viewMatrix,_projMatrix);
 
+	// Draw all asteroids in the vector
 	if (allAsteroids.size() > 0)
 	{
 		for (size_t i = 0; i < allAsteroids.size(); i++)
@@ -195,14 +136,14 @@ void Scene::Draw(std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAste
 		}
 	}
 
+	// Draw all lasers in the vector
 	if (allLasers.size() > 0)
 	{
 		for (size_t i = 0; i < allLasers.size(); i++)
 		{
 			allLasers.at(i)->Draw(_viewMatrix, _projMatrix);
 		}
-	}
-	
+	}	
 }
 
 bool Scene::GetGameStatus()

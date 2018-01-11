@@ -11,6 +11,7 @@ Laser::Laser(Player *player)
 	laserMesh = new Mesh();
 	laserMesh->LoadOBJ("Laser.obj");
 	SetMesh(laserMesh);
+	// Set initial position inside the ship
 	SetPosition(player->GetPosition().x + 1, player->GetPosition().y, player->GetPosition().z);
 	_velocity = 0.25f;
 }

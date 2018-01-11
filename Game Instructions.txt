@@ -6,7 +6,7 @@ Over time more asteroids will start to appear, making them harder to avoid.
 Controls:
 Movement - WASD or Arrow Keys
 Shoot - Spacebar
-Slow down - Hold Shift
+Slow down - Hold Left Shift
 Quit - Escape
 
 Asteroids:

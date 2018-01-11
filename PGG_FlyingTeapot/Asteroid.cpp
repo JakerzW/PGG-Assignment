@@ -30,33 +30,10 @@ Asteroid::Asteroid()
 
 Asteroid::~Asteroid()
 {
-	// Delete all materials and meshes used by the asteroid (setting to null to avoid double deletion errors)
-	//asteroidMaterial = NULL;
+	// Delete the material and mesh
 	delete asteroidMaterial;
-	//SetMaterial(NULL);
-	//delete _material;
-	//asteroidMesh = NULL;
 	delete asteroidMesh;
-	//SetMesh(NULL);
-	//delete _mesh;
-
-	//SetPosition(NULL, NULL, NULL);
 }
-//
-//void Asteroid::ChangeRoll(float value)
-//{
-//
-//}
-//
-//void Asteroid::ChangeHorizontalPos(float value)
-//{
-//
-//}
-//
-//void Asteroid::ChangeVerticalPos(float value)
-//{
-//
-//}
 
 void Asteroid::IncreaseVelocity(float newVelocity)
 {

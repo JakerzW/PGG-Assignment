@@ -10,7 +10,7 @@
 
 #include "Scene.h"
 
-// iostream is so we can output error messages to console
+// Include iostream so we can output error messages to console
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,7 +20,6 @@
 bool InitGL()
 {
 	// GLEW has a problem with loading core OpenGL
-	// See here: https://www.opengl.org/wiki/OpenGL_Loading_Library
 	// The temporary workaround is to enable its 'experimental' features
 	glewExperimental = GL_TRUE;
 
@@ -55,9 +54,7 @@ int main(int argc, char *argv[])
 
 	// This is how we set the context profile
 	// We need to do this through SDL, so that it can set up the OpenGL drawing context that matches this
-	// (of course in reality we have no guarantee this will be available and should provide fallback methods if it's not!)
-	// Anyway, we basically first say which version of OpenGL we want to use
-	// So let's say 4.3:
+	// Set the version of OpenGL to 4.3
 	// Major version number (4):
 	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
 	// Minor version number (3):
@@ -126,178 +123,155 @@ int main(int argc, char *argv[])
 	//Initialise the random number generator for use in setting the asteroids spawn point
 	srand(time(NULL));
 
-	// We are now preparing for our main loop (also known as the 'game loop')
-	// This loop will keep going round until we exit from our program by changing the bool 'go' to the value false
-	// This loop is an important concept and forms the basis of most games you'll be writing
-	// Within this loop we generally do the following things:
-	//   * Check for input from the user (and do something about it!)
-	//   * Update our world
-	//   * Draw our world
-	// We will come back to this in later lectures
+	// Set up the game loop - when gameStatus is false the game will end
 	bool gameStatus = true;
 	while(gameStatus)
 	{
+		// Get the gameStatus from the scene (this is where collisions are calculated and therefore dictate the gameStatus)
 		gameStatus = myScene.GetGameStatus();
+
+		// Don't carry on with the loop if the game should be exiting
 		if (!gameStatus)
 			break;
-		// Here we are going to check for any input events
-		// Basically when you press the keyboard or move the mouse, the parameters are stored as something called an 'event'
-		// SDL has a queue of events
-		// We need to check for each event and then do something about it (called 'event handling')
-		// the SDL_Event is the datatype for the event
+
+		// Set up an event to check for any user inputs
 		SDL_Event incomingEvent;
-		// SDL_PollEvent will check if there is an event in the queue
-		// If there's nothing in the queue it won't sit and wait around for an event to come along (there are functions which do this, and that can be useful too!)
-		// For an empty queue it will simply return 'false'
-		// If there is an event, the function will return 'true' and it will fill the 'incomingEvent' we have given it as a parameter with the event data
+		
+		// Use poll event if there are any inputs in the queue
 		while( SDL_PollEvent( &incomingEvent ) )
 		{
-			// If we get in here, we have an event and need to figure out what to do with it
-			// For now, we will just use a switch based on the event's type
+			// Check which type of input is in the event
 			switch( incomingEvent.type )
 			{
 			case SDL_QUIT:
-				// The event type is SDL_QUIT
-				// This means we have been asked to quit - probably the user clicked on the 'x' at the top right corner of the window
-				// To quit we need to set our 'go' bool to false so that we can escape out of the game loop
+				// If the user requests we exit, change the gameStatus to false
 				gameStatus = false;
-				break;
-
-				// If you want to learn more about event handling and different SDL event types, see:
-				// https://wiki.libsdl.org/SDL_Event
-				// and also: https://wiki.libsdl.org/SDL_EventType
-				// but don't worry, we'll be looking at handling user keyboard and mouse input soon
-				
+				break;				
 			case SDL_KEYDOWN:
-				// The event type is SDL_KEYDOWN
-				// This means that the user has pressed a key
-				// Let's figure out which key they pressed
+				// Check which key has been pressed
+				// Change the boolean for the action to be performed by a certain key
 				switch( incomingEvent.key.keysym.sym )
 				{
-				case SDLK_DOWN:
-					cmdMoveBackward = true;
-					break;
-				case SDLK_UP:
-					cmdMoveForward = true;
-					break;
-				case SDLK_LEFT:
-					cmdRollLeft = true;
-					break;
-				case SDLK_RIGHT:
-					cmdRollRight = true;
-					break;
-				case SDLK_a:
-					cmdRollLeft = true;
-					break;
-				case SDLK_d:
-					cmdRollRight = true;
-					break;
-				case SDLK_w:
-					cmdMoveForward = true;
-					break;
-				case SDLK_s:
-					cmdMoveBackward = true;
-					break;
-				case SDLK_PAGEUP:
-					cmdThrustUp = true;
-					break;
-				case SDLK_PAGEDOWN:
-					cmdThrustDown = true;
-					break;
-				case SDLK_LSHIFT:
-					cmdSlowDown = true;
-					break;
-				case SDLK_SPACE:
-					cmdShoot = true;
-					break;
-				case SDLK_TAB:
-					//cmdReleaseAsteroid = true;
-					break;
-				case SDLK_HASH:
-					//std::cout << "Position: " << glm::to_string(mainPlayer->GetPosition()) << std::endl;
-					//std::cout << "Roll: " << glm::to_string(mainPlayer->GetOrientation()) << std::endl;
-					//std::cout << SDL_GetTicks() << std::endl;
-					std::cout << numberReleased << std::endl;
-					// Insert console output commands
-					break;
-				case SDLK_ESCAPE:
-					gameStatus = false;
-					break;
+					case SDLK_DOWN:
+						// For example if we press the down arrow, we want the player to move backwards
+						cmdMoveBackward = true;
+						break;
+					case SDLK_UP:
+						cmdMoveForward = true;
+						break;
+					case SDLK_LEFT:
+						cmdRollLeft = true;
+						break;
+					case SDLK_RIGHT:
+						cmdRollRight = true;
+						break;
+					case SDLK_a:
+						cmdRollLeft = true;
+						break;
+					case SDLK_d:
+						cmdRollRight = true;
+						break;
+					case SDLK_w:
+						cmdMoveForward = true;
+						break;
+					case SDLK_s:
+						// We can also have two keys do the same thing (E.G. WASD and the arrow keys perform the same actions)
+						cmdMoveBackward = true;
+						break;
+					case SDLK_PAGEUP:
+						cmdThrustUp = true;
+						break;
+					case SDLK_PAGEDOWN:
+						cmdThrustDown = true;
+						break;
+					case SDLK_LSHIFT:
+						cmdSlowDown = true;
+						break;
+					case SDLK_SPACE:
+						cmdShoot = true;
+						break;
+					case SDLK_ESCAPE:
+						gameStatus = false;
+						break;
 				}
 				break;
 			
 			case SDL_KEYUP:
-				// The event type is SDL_KEYUP
-				// This means that the user has released a key
-				// Let's figure out which key they released
+				// Here we will check which key has been released
+				// We will change the corresponding action to false to stop the action when a key has been released
 				switch( incomingEvent.key.keysym.sym )
 				{
-				case SDLK_DOWN:
-					cmdMoveBackward = false;
-					break;
-				case SDLK_UP:
-					cmdMoveForward = false;
-					break;
-				case SDLK_LEFT:
-					cmdRollLeft = false;
-					break;
-				case SDLK_RIGHT:
-					cmdRollRight = false;
-					break;
-				case SDLK_a:
-					cmdRollLeft = false;
-					break;
-				case SDLK_d:
-					cmdRollRight = false;
-					break;
-				case SDLK_w:
-					cmdMoveForward = false;
-					break;
-				case SDLK_s:
-					cmdMoveBackward = false;
-					break;
-				case SDLK_PAGEUP:
-					cmdThrustUp = false;
-					break;
-				case SDLK_PAGEDOWN:
-					cmdThrustDown = false;
-					break;
-				case SDLK_LSHIFT:
-					cmdSlowDown = false;
-					break;
-				case SDLK_SPACE:
-				{
-					cmdShoot = false;
-					cmdHasShot = false;
-					break;
-				}
+					case SDLK_DOWN:
+						cmdMoveBackward = false;
+						break;
+					case SDLK_UP:
+						cmdMoveForward = false;
+						break;
+					case SDLK_LEFT:
+						cmdRollLeft = false;
+						break;
+					case SDLK_RIGHT:
+						cmdRollRight = false;
+						break;
+					case SDLK_a:
+						cmdRollLeft = false;
+						break;
+					case SDLK_d:
+						cmdRollRight = false;
+						break;
+					case SDLK_w:
+						cmdMoveForward = false;
+						break;
+					case SDLK_s:
+						cmdMoveBackward = false;
+						break;
+					case SDLK_PAGEUP:
+						cmdThrustUp = false;
+						break;
+					case SDLK_PAGEDOWN:
+						cmdThrustDown = false;
+						break;
+					case SDLK_LSHIFT:
+						cmdSlowDown = false;
+						break;
+					case SDLK_SPACE:
+					{
+						cmdShoot = false;
+						cmdHasShot = false;
+						break;
+					}
 				}
 				break;
 			}
 		}
 
-		// Update our world
-		// We are going to work out the time between each frame now
-		// First, find the current time
-		// again, SDL_GetTicks() returns the time in milliseconds since SDL was initialised
-		// We can use this as the current time
+
+		// Here we need to update our world
+
+		// We are going to work out the time between each frame
+		// First, find the current time using the GetTicks function
 		unsigned int current = SDL_GetTicks();
+
 		// Next, we want to work out the change in time between the previous frame and the current one
-		// This is a 'delta' (used in physics to denote a change in something)
-		// So we call it our 'deltaT' and I like to use an 's' to remind me that it's in seconds!
-		// (To get it in seconds we need to divide by 1000 to convert from milliseconds)
+		// DeltaTs = Change in time in seconds
 		float deltaTs = (float) (current - lastTime) / 1000.0f;
+
 		// Now that we've done this we can use the current time as the next frame's previous time
 		lastTime = current;
 
-		// Move and roll the player left and right if the move is valid
+
+		// Now we need to use the input given by the user to control the actions in the game
+		
+		// Move and roll the player left and right if the move is valid (within the boundaries)
 		if ((cmdRollLeft & !cmdRollRight) && (mainPlayer->GetPosition().z > -7))
 		{
+			// Check to see if the player wants to move the player slower (holding down the left shift key)
 			if (cmdSlowDown)
 			{
 				mainPlayer->ChangeRoll(-0.5f);
 				mainPlayer->ChangeHorizontalPos(10.0f);
 			}
+			// If not then just move the player at normal pace
 			else
 			{
 				mainPlayer->ChangeRoll(-1.0f);
@@ -319,7 +293,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			// Reset the roll of the player
+			// If no input has been made, make no action
 			mainPlayer->ChangeRoll( 0.0f );
 			mainPlayer->ChangeHorizontalPos(0.0f);
 		}
@@ -327,6 +301,7 @@ int main(int argc, char *argv[])
 		// Move forward or backward if the move is valid
 		if ((cmdMoveForward & !cmdMoveBackward) && (mainPlayer->GetPosition().x < 3))
 		{
+			// Check if we need to move the player slower
 			if (cmdSlowDown)
 			{
 				mainPlayer->ChangeVerticalPos(10.0f);
@@ -347,20 +322,26 @@ int main(int argc, char *argv[])
 				mainPlayer->ChangeVerticalPos(-20.0f);
 			}			
 		}
+		// Do nothing if no action is made
 		else
 		{
 			mainPlayer->ChangeVerticalPos(0.0f);
 		}
 
+		// If the player wants to shoot and has not shot already before releasing the spacebar
+		// This ensures the player only shoots once per button press
 		if (cmdShoot & !cmdHasShot)
 		{
 			cmdHasShot = true;
+			// Create a new laser and add it to the vector
 			Laser *laser = new Laser(mainPlayer);
 			allLasers.push_back(laser);
 		}
 
+		// Check if enough time has passed between the last time an asteroid to now
 		if (current > (previousRelease + releaseTime))
 		{
+			//If yes, change the time for when an asteroid has been released to the current time
 			previousRelease = current;
 			// Reduce time between releases based on how many asteroids have been released
 			if (numberReleased < 100)
@@ -369,6 +350,7 @@ int main(int argc, char *argv[])
 				numberReleased++;
 			}
 			// Create a new asteroid and add it to the vector
+			// Look in Asteroid.cpp to see how I'm creating game objects
 			Asteroid *asteroid = new Asteroid();
 			allAsteroids.push_back(asteroid);			
 		}
@@ -387,24 +369,17 @@ int main(int argc, char *argv[])
 		// Draw the scene
 		myScene.Draw(allLasers, allAsteroids);
 
-
 		// This tells the renderer to actually show its contents to the screen
-		// We'll get into this sort of thing at a later date - or just look up 'double buffering' if you're impatient :P
 		SDL_GL_SwapWindow( window );
-
 		
 		// Limiter in case we're running really quick
-		if( deltaTs < (1.0f/50.0f) )	// not sure how accurate the SDL_Delay function is..
+		if( deltaTs < (1.0f/50.0f) )
 		{
 			SDL_Delay((unsigned int) (((1.0f/50.0f) - deltaTs)*1000.0f) );
-		}
-
-		
+		}		
 	}
 
 	// If we get outside the main game loop, it means our user has requested we exit
-
-	// Our cleanup phase, hopefully fairly self-explanatory ;)
 	SDL_GL_DeleteContext( glcontext );
 	SDL_DestroyWindow( window );
 	SDL_Quit();
