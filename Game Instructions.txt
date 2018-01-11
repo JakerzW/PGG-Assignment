@@ -1,0 +1,14 @@
+Asteroids!
+
+The aim of the game is to last as long as you can without hitting an asteroid and getting destroyed.
+Over time more asteroids will start to appear, making them harder to avoid.
+
+Controls:
+Movement - WASD or Arrow Keys
+Shoot - Spacebar
+Slow down - Hold Shift
+Quit - Escape
+
+Asteroids:
+Light - These can be destroyed by shooting at them
+Dark - These can not be destroyed so be careful to avoid them
