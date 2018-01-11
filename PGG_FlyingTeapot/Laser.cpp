@@ -2,13 +2,13 @@
 
 Laser::Laser(Player *player)
 {
-	//laserMaterial = new Material();
+	laserMaterial = new Material();
 	laserMaterial->LoadShaders("VertShader.txt", "StarsFragShader.txt");
 	laserMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	laserMaterial->SetTexture("Laser.bmp");
 	laserMaterial->SetLightPosition(_lightPosition);
 	SetMaterial(laserMaterial);
-	//laserMesh = new Mesh();
+	laserMesh = new Mesh();
 	laserMesh->LoadOBJ("Laser.obj");
 	SetMesh(laserMesh);
 	SetPosition(player->GetPosition().x + 1, player->GetPosition().y, player->GetPosition().z);
@@ -18,16 +18,8 @@ Laser::Laser(Player *player)
 Laser::~Laser()
 {
 	// Delete all materials and meshes used by the laser (setting to null to avoid double deletion errors)
-	laserMaterial = nullptr;
 	delete laserMaterial;
-	SetMaterial(nullptr);
-	delete _material;
-	laserMesh = nullptr;
 	delete laserMesh;
-	SetMesh(nullptr);
-	delete _mesh;
-
-	SetPosition(NULL, NULL, NULL);
 }
 
 void Laser::Update(float deltaTs)

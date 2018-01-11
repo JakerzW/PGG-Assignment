@@ -21,9 +21,7 @@ Stars::~Stars()
 {
 	// Delete all the materials and meshes used by the stars
 	delete starsMaterial;
-	delete _material;
 	delete starsMesh;
-	delete _mesh;
 }
 
 void Stars::Update(float deltaTs)

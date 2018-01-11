@@ -107,7 +107,7 @@ Scene::~Scene()
 	// You should neatly clean everything up here
 }
 
-void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
+void Scene::Update(float deltaTs, std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids)
 {
 	// Update the game objects
 	_stars->Update(deltaTs);
@@ -119,10 +119,9 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 		allAsteroids.at(i)->Update(deltaTs);
 		if (allAsteroids.at(i)->GetPosition().x < -20)
 		{
-			//delete allAsteroids.at(i);
-			//allAsteroids.erase(allAsteroids.begin() + i);
-
-			allAsteroids.at(i)->~Asteroid();
+			delete allAsteroids.at(i);
+			allAsteroids.erase(allAsteroids.begin() + i);
+			i--;
 		}
 	}
 
@@ -132,8 +131,9 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 		allLasers.at(i)->Update(deltaTs);
 		if (allLasers.at(i)->GetPosition().x > 20)
 		{
-			allLasers.at(i)->~Laser();
-			//allLasers.pop_back();
+			delete allLasers.at(i);
+			allLasers.erase(allLasers.begin() + i);
+			i--;				
 		}
 	}
 
@@ -146,9 +146,8 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 		float minDistance = (_player->GetSize() + allAsteroids.at(a)->GetSize());
 		if (distanceBetweenAP < minDistance)
 		{
-			// Destroy player and asteroid upon collision and end the game
-			_player->~Player();
-			allAsteroids.at(a)->~Asteroid();
+			// Destroy player upon collision and end the game
+			delete _player;
 			_gameStatus = false;
 			break;
 		}
@@ -161,15 +160,16 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 			// If the distance between the points is less than the radius of thea asteroid, the objects must have collided
 			if (distanceBetweenAL < allAsteroids.at(a)->GetSize())
 			{
-				allLasers.at(l)->~Laser();
-				//allLasers.erase(allLasers.begin() + l);
+				delete allLasers.at(l);
+				allLasers.erase(allLasers.begin() + l);
+				if (l > 0) l--;
 				if (allAsteroids.at(a)->GetDestructable())
 				{
-					allAsteroids.at(a)->~Asteroid();
-					//allAsteroids.erase(allAsteroids.begin() + a);
+					delete allAsteroids.at(a);
+					allAsteroids.erase(allAsteroids.begin() + a);
+					if (a > 0) a--;
 					collision = true;
 				}
-				
 				break;
 			}
 		}
@@ -181,7 +181,7 @@ void Scene::Update(float deltaTs, std::vector<Laser*> allLasers, std::vector<Ast
 	}
 }
 
-void Scene::Draw(std::vector<Laser*> allLasers, std::vector<Asteroid*> allAsteroids)
+void Scene::Draw(std::vector<Laser*> &allLasers, std::vector<Asteroid*> &allAsteroids)
 {
 	// Draw the objects, giving them the camera's position and projection
 	_stars->Draw(_viewMatrix,_projMatrix);
