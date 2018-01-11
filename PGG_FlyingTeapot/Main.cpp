@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 	// They will be used to control the camera
 	bool cmdRotateLeft = false, cmdRotateRight = false, cmdRotateUp = false, cmdRotateDown = false;
 	bool cmdRollLeft = false, cmdRollRight = false, cmdMoveForward = false, cmdMoveBackward = false, cmdThrustUp = false, cmdThrustDown = false;
-	bool cmdShoot = false, cmdHasShot = false;
+	bool cmdShoot = false, cmdHasShot = false, cmdSlowDown = false;
 	
 	Player *mainPlayer = myScene.GetPlayer();
 
@@ -237,6 +237,9 @@ int main(int argc, char *argv[])
 				case SDLK_PAGEDOWN:
 					cmdThrustDown = true;
 					break;
+				case SDLK_LSHIFT:
+					cmdSlowDown = true;
+					break;
 				case SDLK_SPACE:
 					cmdShoot = true;
 					break;
@@ -292,6 +295,9 @@ int main(int argc, char *argv[])
 				case SDLK_PAGEDOWN:
 					cmdThrustDown = false;
 					break;
+				case SDLK_LSHIFT:
+					cmdSlowDown = false;
+					break;
 				case SDLK_SPACE:
 				{
 					cmdShoot = false;
@@ -320,13 +326,29 @@ int main(int argc, char *argv[])
 		// Move and roll the player left and right if the move is valid
 		if ((cmdRollLeft & !cmdRollRight) && (mainPlayer->GetPosition().z > -7))
 		{
-			mainPlayer->ChangeRoll( -1.0f );
-			mainPlayer->ChangeHorizontalPos(20.0f);
+			if (cmdSlowDown)
+			{
+				mainPlayer->ChangeRoll(-0.5f);
+				mainPlayer->ChangeHorizontalPos(10.0f);
+			}
+			else
+			{
+				mainPlayer->ChangeRoll(-1.0f);
+				mainPlayer->ChangeHorizontalPos(20.0f);
+			}			
 		}
 		else if ((cmdRollRight &! cmdRollLeft) && (mainPlayer->GetPosition().z < 7))
 		{
-			mainPlayer->ChangeRoll( 1.0f );
-			mainPlayer->ChangeHorizontalPos(-20.0f);
+			if (cmdSlowDown)
+			{
+				mainPlayer->ChangeRoll(0.5f);
+				mainPlayer->ChangeHorizontalPos(-10.0f);
+			}
+			else
+			{
+				mainPlayer->ChangeRoll(1.0f);
+				mainPlayer->ChangeHorizontalPos(-20.0f);
+			}			
 		}
 		else
 		{
@@ -338,11 +360,25 @@ int main(int argc, char *argv[])
 		// Move forward or backward if the move is valid
 		if ((cmdMoveForward & !cmdMoveBackward) && (mainPlayer->GetPosition().x < 3))
 		{
-			mainPlayer->ChangeVerticalPos(20.0f);
+			if (cmdSlowDown)
+			{
+				mainPlayer->ChangeVerticalPos(10.0f);
+			}
+			else
+			{
+				mainPlayer->ChangeVerticalPos(20.0f);
+			}			
 		}
 		else if ((cmdMoveBackward & !cmdMoveForward) && (mainPlayer->GetPosition().x > -2.5))
 		{
-			mainPlayer->ChangeVerticalPos(-20.0f);
+			if (cmdSlowDown)
+			{
+				mainPlayer->ChangeVerticalPos(-10.0f);
+			}
+			else
+			{
+				mainPlayer->ChangeVerticalPos(-20.0f);
+			}			
 		}
 		else
 		{
